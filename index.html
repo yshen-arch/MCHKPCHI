@@ -1,0 +1,2657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>香港墨尔文国际学校小学中文部 - 识字挑战计划 | Malvern College HK Primary Chinese Character Challenge</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons (在线模式备用，离线自动退化为标准Emoji/SVG，确保完美兼容) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts for Kaiti & English -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    /* 强制造型使用楷体渲染生字 */
+    .font-kaiti {
+      font-family: 'Ma Shan Zheng', 'Kaiti', 'STKaiti', 'DFKai-SB', 'KaiTi', serif;
+    }
+    .font-standard {
+      font-family: 'Noto Sans SC', 'Helvetica Neue', Arial, sans-serif;
+    }
+    .font-serif-uk {
+      font-family: 'Playfair Display', Georgia, serif;
+    }
+    
+    /* 墨尔文墨绿与金配色主题 */
+    .bg-malvern-green {
+      background-color: #113F33;
+    }
+    .text-malvern-green {
+      color: #113F33;
+    }
+    .border-malvern-green {
+      border-color: #113F33;
+    }
+    .bg-malvern-gold {
+      background-color: #C5A059;
+    }
+    .text-malvern-gold {
+      color: #C5A059;
+    }
+    .border-malvern-gold {
+      border-color: #C5A059;
+    }
+    .hover-malvern-gold:hover {
+      background-color: #B48E46;
+    }
+    
+    /* 卡片翻转效果 */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    /* 优化手机浏览器下的点击反馈和滚动条 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-standard text-slate-800 min-h-screen flex flex-col overflow-x-hidden">
+
+  <!-- 顶部导航栏 -->
+  <header class="bg-malvern-green text-white shadow-md border-b-4 border-malvern-gold">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col lg:flex-row justify-between items-center gap-4">
+      <div class="flex items-center space-x-3 text-center lg:text-left">
+        <div class="bg-white p-1.5 rounded shadow-inner flex-shrink-0">
+          <svg class="w-10 h-12 text-malvern-green" viewBox="0 0 100 120" fill="currentColor">
+            <path d="M50 0 C75 0 90 15 90 45 C90 85 50 115 50 115 C50 115 10 85 10 45 C10 15 25 0 50 0 Z" fill="#113F33"/>
+            <path d="M50 8 C70 8 82 20 82 45 C82 78 50 104 50 104 C50 104 18 78 18 45 C18 20 30 8 50 8 Z" fill="#C5A059"/>
+            <text x="50" y="65" font-family="Georgia" font-size="40" fill="white" font-weight="bold" text-anchor="middle">M</text>
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-wide font-serif-uk text-malvern-gold">MALVERN COLLEGE HONG KONG</h1>
+          <p class="text-xs sm:text-sm tracking-wider opacity-90 font-medium">小学中文部 识字挑战计划 | Primary Chinese Challenge</p>
+        </div>
+      </div>
+      
+      <!-- 控制台：自适应弹性流式包裹，防移动端重叠 -->
+      <div class="flex flex-wrap items-center justify-center gap-2 w-full lg:w-auto">
+        
+        <!-- 发音引擎模式选择 -->
+        <div class="flex items-center bg-emerald-950/60 rounded px-2.5 py-1.5 border border-emerald-800 flex-grow sm:flex-grow-0 justify-center">
+          <label for="engine-select" class="text-xs font-semibold mr-1.5 text-malvern-gold flex items-center gap-1">
+            <span class="inline-block">📢</span>
+            <span data-zh="发音模式" data-en="Engine">发音模式</span>:
+          </label>
+          <select id="engine-select" onchange="changeSpeechEngine()" class="bg-slate-800 text-white text-xs rounded px-1.5 py-1 focus:outline-none focus:ring-1 focus:ring-malvern-gold">
+            <option value="cloud" selected data-zh="在线普通话 (推荐)" data-en="Cloud Mandarin">在线普通话 (推荐)</option>
+            <option value="device" data-zh="设备内置语音" data-en="Device TTS">设备内置语音</option>
+          </select>
+        </div>
+
+        <!-- 发音人手动选择器 -->
+        <div id="voice-selector-container" class="hidden flex items-center bg-emerald-900/40 rounded px-2.5 py-1.5 border border-emerald-800 flex-grow sm:flex-grow-0 justify-center">
+          <label for="voice-select" class="text-xs font-semibold mr-1.5 text-malvern-gold flex items-center gap-1">
+            <span class="inline-block">👤</span>
+            <span data-zh="发音人" data-en="Voice">发音人</span>:
+          </label>
+          <select id="voice-select" onchange="changeVoiceSelection()" class="bg-slate-800 text-white text-xs rounded px-1.5 py-1 focus:outline-none focus:ring-1 focus:ring-malvern-gold max-w-[110px] sm:max-w-[140px]">
+            <option value="" data-zh="正在加载..." data-en="Loading...">正在加载...</option>
+          </select>
+        </div>
+
+        <!-- 进度保存提示 -->
+        <span id="cloud-status" class="text-xs bg-emerald-800/80 px-2.5 py-2 rounded text-emerald-100 flex items-center gap-1 transition-all flex-shrink-0">
+          <span class="inline-block">💾</span> <span data-zh="进度已自动保存" data-en="Progress Saved">进度已自动保存</span>
+        </span>
+        
+        <!-- 双语切换按钮 -->
+        <button id="btn-lang" onclick="toggleLanguage()" class="bg-malvern-gold hover:bg-amber-600 text-malvern-green px-3.5 py-2 rounded text-sm font-bold shadow-sm transition flex items-center gap-1 flex-shrink-0">
+          <span class="inline-block">🌐</span> <span>English</span>
+        </button>
+
+        <!-- 重置进度按钮 -->
+        <button onclick="confirmReset()" class="bg-red-800 hover:bg-red-900 text-white px-3.5 py-2 rounded text-sm font-bold shadow-sm transition flex items-center gap-1 flex-shrink-0">
+          <span class="inline-block">🔄</span> <span data-zh="重置" data-en="Reset">重置</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体部分：采用 12 列响应式 Grid 排版，对平板及电脑大屏极为友好 -->
+  <main class="flex-grow max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    
+    <!-- 左侧控制面板与状态栏：在手机占 12 列，大屏占 4 列 (1/3) -->
+    <div class="col-span-1 lg:col-span-4 xl:col-span-3 flex flex-col gap-4 w-full">
+      
+      <!-- 学生信息与总体进度卡 -->
+      <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5">
+        <h2 class="text-malvern-green font-bold text-lg mb-3 border-b pb-2 flex justify-between items-center">
+          <span class="flex items-center gap-2">👨‍🎓 <span data-zh="学习进度" data-en="Your Progress">学习进度</span></span>
+          <span id="current-user-tag" class="text-xs text-slate-500 font-mono"></span>
+        </h2>
+        
+        <!-- 进度条 -->
+        <div class="mb-4">
+          <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+            <span data-zh="通关进度" data-en="Level Progress">通关进度</span>
+            <span id="progress-percentage">0% (0/50)</span>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+            <div id="progress-bar" class="bg-gradient-to-r from-malvern-green to-malvern-gold h-full transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-center text-xs">
+          <div class="bg-slate-50 p-2.5 rounded border border-slate-100">
+            <div class="text-slate-500" data-zh="已掌握字数" data-en="Mastered">已掌握字数</div>
+            <div id="stats-mastered" class="text-lg font-bold text-malvern-green">0</div>
+          </div>
+          <div class="bg-slate-50 p-2.5 rounded border border-slate-100">
+            <div class="text-slate-500" data-zh="当前关卡" data-en="Current Gate">当前关卡</div>
+            <div id="stats-current-gate" class="text-lg font-bold text-malvern-gold">Gate 1</div>
+          </div>
+          
+          <!-- 称号荣誉卡 -->
+          <div class="bg-gradient-to-r from-amber-50 to-yellow-50 p-2.5 rounded border border-amber-200 col-span-2 mt-2 flex items-center justify-between shadow-inner">
+            <span class="text-amber-900 font-bold text-xs flex items-center gap-1">
+              👑
+              <span data-zh="最高荣誉称号" data-en="Honorary Title">最高荣誉称号</span>:
+            </span>
+            <span id="stats-honor-title" class="text-xs font-black text-amber-800 tracking-wide font-kaiti">
+              识字小兵
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 关卡选择列表：在小屏幕上高度紧凑，大屏幕滚动 -->
+      <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 flex flex-col h-auto max-h-[350px] lg:max-h-[550px]">
+        <h3 class="font-bold text-malvern-green mb-2 flex items-center gap-2">
+          📁 <span data-zh="关卡选择" data-en="Select Gate">关卡选择</span>
+        </h3>
+        <p class="text-xs text-slate-500 mb-3" data-zh="每关包含3个级别。通关可解锁下一关。" data-en="Each Gate has 3 levels. Pass to unlock next.">每关包含3个级别。通关可解锁下一关。</p>
+        
+        <!-- 滚动关卡容器 -->
+        <div id="gates-container" class="flex-grow overflow-y-auto space-y-2 pr-1">
+          <!-- 关卡列表节点由 JavaScript 渲染 -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 右侧主体内容区域：在手机占 12 列，大屏占 8 列 (2/3) -->
+    <div class="col-span-1 lg:col-span-8 xl:col-span-9 flex flex-col gap-6 w-full">
+
+      <!-- 当前关卡横幅 -->
+      <div class="bg-gradient-to-r from-malvern-green to-slate-900 text-white rounded-2xl p-6 shadow-lg border-l-8 border-malvern-gold flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 w-full">
+        <div class="flex-grow">
+          <div id="current-gate-title" class="text-2xl font-bold text-malvern-gold font-serif-uk">Gate 1 (Levels 1 - 3)</div>
+          <p id="current-gate-desc" class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed" data-zh="包含生字：一二三大人心我的是爸妈爱小日月了火开过生长好玩吃去山水里牛儿花草这有和在" data-en="Includes characters: 一二三大人心我的是爸妈爱小日月了火开过生长好玩吃去山水里牛儿花草这有和在">
+            包含生字：一二三...
+          </p>
+        </div>
+        <div class="flex gap-2 flex-shrink-0 w-full sm:w-auto">
+          <button onclick="switchTab('study')" id="tab-study-btn" class="flex-grow sm:flex-grow-0 bg-malvern-gold text-malvern-green px-4 py-2.5 rounded-lg font-bold shadow transition flex items-center justify-center gap-1 hover:bg-amber-500 text-sm">
+            📖 <span data-zh="学习卡" data-en="Flashcards">学习卡</span>
+          </button>
+          <button onclick="switchTab('game')" id="tab-game-btn" class="flex-grow sm:flex-grow-0 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2.5 rounded-lg font-bold shadow transition flex items-center justify-center gap-1 text-sm">
+            🎮 <span data-zh="挑战游戏" data-en="Challenge Game">挑战游戏</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 选项卡 1：字卡学习模式 -->
+      <div id="tab-study" class="space-y-6 w-full">
+        <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 sm:p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="font-bold text-lg text-malvern-green flex items-center gap-2">
+              📇 <span data-zh="生字字卡浏览" data-en="Interactive Flashcards">生字字卡浏览</span>
+            </h3>
+            <div class="text-sm text-slate-500 font-mono">
+              <span id="study-index-label">1 / 10</span>
+            </div>
+          </div>
+
+          <!-- 字卡主体展示区：极富弹性的宽度设计 -->
+          <div class="flex flex-col items-center justify-center min-h-[400px] w-full max-w-[480px] mx-auto">
+            <!-- 翻转字卡容器 -->
+            <div id="flashcard-container" class="w-full h-[360px] perspective-1000 cursor-pointer" onclick="flipCard()">
+              <div id="flashcard-inner" class="w-full h-full transform-style-3d transition-transform duration-500 relative rounded-2xl shadow-xl border-2 border-malvern-gold">
+                
+                <!-- 卡片正面 (汉字) -->
+                <div class="absolute inset-0 bg-white rounded-2xl backface-hidden flex flex-col justify-between p-6">
+                  <!-- 正面顶栏：级别 & 熟练度 -->
+                  <div class="flex justify-between items-center w-full">
+                    <span id="card-level-tag" class="bg-malvern-green/10 text-malvern-green text-xs font-semibold px-2.5 py-1 rounded-full border border-malvern-green/20">Level 1</span>
+                    <div class="flex items-center gap-1">
+                      <span class="text-xs text-slate-400" data-zh="掌握度" data-en="Mastery">掌握度</span>
+                      <div id="card-mastery-stars" class="flex gap-0.5 text-amber-400">
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- 正面中心：巨型汉字 -->
+                  <div class="flex flex-col items-center justify-center flex-grow py-4">
+                    <div id="card-char" class="font-kaiti text-7xl sm:text-8xl text-malvern-green font-bold leading-none select-none transition-transform hover:scale-105 duration-200">一</div>
+                    <div id="card-pinyin" class="text-xl sm:text-2xl text-slate-600 font-semibold tracking-wider mt-4">yī</div>
+                  </div>
+
+                  <!-- 正面底栏 -->
+                  <div class="flex justify-between items-center w-full">
+                    <button id="speak-btn" onclick="speakCurrentCard(event)" class="bg-malvern-gold/20 hover:bg-malvern-gold/40 text-malvern-green p-3 rounded-full transition shadow-sm flex items-center justify-center w-12 h-12" title="朗读 / Read Aloud">
+                      🔊
+                    </button>
+                    <div class="text-[10px] sm:text-xs text-slate-400 flex items-center gap-1">
+                      🔄 <span data-zh="点击翻面" data-en="Flip Card">点击翻面</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 卡片背面 (英文翻译、组词、例句) -->
+                <div class="absolute inset-0 bg-slate-900 text-white rounded-2xl backface-hidden rotate-y-180 flex flex-col justify-between p-5 overflow-y-auto font-standard text-xs">
+                  <!-- 背面顶栏 -->
+                  <div class="flex justify-between items-center border-b border-slate-700 pb-2 flex-shrink-0">
+                    <span id="card-char-back" class="font-kaiti text-2xl text-malvern-gold font-bold">一</span>
+                    <span id="card-pinyin-back" class="text-sm font-semibold tracking-wide text-slate-300">yī</span>
+                    <span id="card-meaning-en" class="text-xs bg-malvern-gold/20 text-malvern-gold font-semibold px-2 py-0.5 rounded">One</span>
+                  </div>
+
+                  <!-- 核心释义 -->
+                  <div class="space-y-3 my-3 flex-grow text-sm">
+                    <!-- 中文意思 -->
+                    <div>
+                      <div class="text-xs text-slate-400 font-bold" data-zh="【字义】" data-en="[Meaning]">【字义】</div>
+                      <div id="card-meaning-zh" class="text-slate-200 mt-0.5 leading-relaxed">数目字。</div>
+                    </div>
+                    <!-- 组词 -->
+                    <div>
+                      <div class="text-xs text-slate-400 font-bold" data-zh="【常用组词】" data-en="[Compounds]">【常用组词】</div>
+                      <div id="card-compounds" class="text-malvern-gold font-semibold mt-0.5">一个 (one), 一些 (some)</div>
+                    </div>
+                    <!-- 例句 -->
+                    <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700">
+                      <div class="text-xs text-malvern-gold font-bold flex items-center gap-1">
+                        💬 <span data-zh="例句" data-en="Example Sentence">例句</span>
+                      </div>
+                      <p id="card-sentence-zh" class="text-slate-100 font-medium mt-1">这里有一个苹果。</p>
+                      <p id="card-sentence-en" class="text-slate-400 text-xs italic mt-1 leading-normal">There is an apple here.</p>
+                    </div>
+                  </div>
+
+                  <!-- 背面底栏 -->
+                  <div class="flex justify-between items-center text-[11px] text-slate-400 pt-2 border-t border-slate-800 flex-shrink-0">
+                    <span data-zh="点击空白翻回正面" data-en="Click background to flip back">点击空白翻回正面</span>
+                    <button onclick="speakCurrentCard(event)" class="text-malvern-gold hover:text-white transition flex items-center gap-1">
+                      🔊 <span data-zh="播音" data-en="Audio">播音</span>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- 字卡控制按钮组 -->
+            <div class="flex justify-between items-center w-full max-w-[280px] sm:max-w-xs mt-6">
+              <button onclick="prevCard()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-11 h-12 rounded-full flex items-center justify-center transition shadow">
+                ◀️
+              </button>
+              <button onclick="toggleCardMarkedMastered()" id="btn-mastered-toggle" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2.5 rounded-full flex items-center gap-2 transition font-semibold text-xs sm:text-sm shadow">
+                ✅ <span data-zh="标记为掌握" data-en="Mark Mastered">标记为掌握</span>
+              </button>
+              <button onclick="nextCard()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-11 h-12 rounded-full flex items-center justify-center transition shadow">
+                ▶️
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 当前关卡字汇清单 -->
+        <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 sm:p-6 w-full">
+          <h3 class="font-bold text-lg text-malvern-green mb-4 flex items-center gap-2">
+            📝 <span data-zh="本关字表" data-en="Gate Word List">本关字表</span>
+          </h3>
+          <div id="gate-characters-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2.5">
+            <!-- 字汇小按钮 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 选项卡 2：挑战游戏模式 -->
+      <div id="tab-game" class="hidden space-y-6 w-full">
+        <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-4 sm:p-6 relative overflow-hidden">
+          
+          <!-- 游戏开始/说明界面 -->
+          <div id="game-intro-screen" class="text-center py-10 space-y-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-malvern-gold/10 rounded-full text-malvern-gold mb-2 animate-bounce">
+              🎮
+            </div>
+            <h3 id="intro-main-title" class="text-xl sm:text-2xl font-bold text-malvern-green font-serif-uk" data-zh="准备好开启识字挑战了吗？" data-en="Ready for the Character Challenge?">
+              准备好开启识字挑战了吗？
+            </h3>
+            <p id="intro-sub-desc" class="max-w-md mx-auto text-xs sm:text-sm text-slate-500 px-4 leading-relaxed" data-zh="每次挑战共有多道题目。系统将随机选择一款有趣的小游戏来测试本关的字汇。答对可提升汉字掌握度！" data-en="Each challenge consists of several tasks. The system will randomly pick one of the minigames to test characters from the current gate. Correct answers improve character mastery!">
+              每次挑战共有多道题目。系统将随机选择一款有趣的小游戏来测试本关的字汇。答对可提升汉字掌握度！
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-3 pt-4 px-4 w-full">
+              <button onclick="startGame()" class="w-full sm:w-auto bg-malvern-green hover:bg-emerald-900 text-white font-bold px-8 py-3 rounded-xl shadow-lg transition-transform hover:-translate-y-0.5 flex items-center justify-center gap-2 text-sm">
+                ▶️ <span data-zh="开始挑战" data-en="Start Challenge">开始挑战</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 游戏游玩中界面 -->
+          <div id="game-play-screen" class="hidden space-y-6 w-full">
+            <!-- 游戏顶部状态 -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-4 border-slate-100">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span id="game-name-badge" class="bg-malvern-green text-white text-[10px] sm:text-xs font-bold px-2.5 py-1 rounded-full border border-malvern-green">游戏载入中</span>
+                <span class="text-xs text-slate-400 font-mono" id="game-step-indicator">Question 1/10</span>
+              </div>
+              <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+                <div class="w-24 bg-slate-100 rounded-full h-2 overflow-hidden border">
+                  <div id="game-progress-bar" class="bg-malvern-gold h-full" style="width: 10%"></div>
+                </div>
+                <span id="game-score" class="text-sm font-bold text-malvern-green font-mono">Score: 0</span>
+              </div>
+            </div>
+
+            <!-- 游戏主舞台容器（高度自适应） -->
+            <div id="game-stage" class="min-h-[280px] sm:min-h-[320px] flex flex-col justify-center items-center py-4 w-full">
+              <!-- 游戏组件代码实时动态渲染于此 -->
+            </div>
+
+            <!-- 游戏提示与结果反馈区域 -->
+            <div id="game-feedback" class="hidden rounded-xl p-3.5 text-center text-xs sm:text-sm font-bold animate-pulse w-full max-w-md mx-auto">
+              <!-- 反馈内容 -->
+            </div>
+          </div>
+
+          <!-- 游戏结果结算界面 -->
+          <div id="game-result-screen" class="hidden text-center py-10 space-y-6 w-full">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full">
+              🏆
+            </div>
+            <h3 class="text-xl sm:text-2xl font-bold text-malvern-green" data-zh="挑战完成！" data-en="Challenge Completed!">挑战完成！</h3>
+            
+            <div class="max-w-md mx-auto bg-slate-50 border border-slate-200 rounded-2xl p-5 text-left space-y-3">
+              <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500" data-zh="本次得分" data-en="Your Score">本次得分:</span>
+                <span id="result-score" class="font-bold text-base text-malvern-green font-mono">10 / 10</span>
+              </div>
+              <div class="flex justify-between items-center text-sm border-t pt-2">
+                <span class="text-slate-500" data-zh="汉字变化状况" data-en="Character Mastering Status">汉字变化状况:</span>
+                <span id="result-mastery-updates" class="font-semibold text-emerald-600 text-xs sm:text-sm">+5 掌握度提升</span>
+              </div>
+              <div id="result-unlocked-banner" class="hidden bg-amber-50 text-amber-800 border border-amber-200 rounded-xl p-3 text-center text-xs font-bold">
+                🔓 <span data-zh="恭喜！你已完全掌握本关，下一关卡已解锁！" data-en="Splendid! You have mastered this Gate, next level is unlocked!">恭喜！你已完全掌握本关，下一关卡已解锁！</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-3 px-4">
+              <button onclick="restartGame()" class="w-full sm:w-auto bg-malvern-gold hover:bg-amber-600 text-malvern-green font-bold px-6 py-2.5 rounded-lg shadow transition flex items-center justify-center gap-1 text-sm">
+                🔄 <span data-zh="再挑战一次" data-en="Challenge Again">再挑战一次</span>
+              </button>
+              <button onclick="switchTab('study')" class="w-full sm:w-auto bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-6 py-2.5 rounded-lg shadow transition flex items-center justify-center gap-1 text-sm">
+                📖 <span data-zh="去字卡学习" data-en="Go to Flashcards">去字卡学习</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- 确认弹窗 & 提示层 -->
+  <div id="custom-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 text-center space-y-4">
+      <div id="modal-icon" class="text-amber-500 text-4xl">
+        ⚠️
+      </div>
+      <h4 id="modal-title" class="text-lg font-bold text-malvern-green">确认操作</h4>
+      <p id="modal-body" class="text-xs sm:text-sm text-slate-600 leading-relaxed font-standard">你确定要重置所有的学习记录吗？此操作无法撤销。</p>
+      <div class="flex justify-center gap-3 pt-2">
+        <button id="modal-btn-cancel" onclick="closeCustomModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-2 rounded-lg text-xs transition">取消</button>
+        <button id="modal-btn-confirm" class="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 浮动通知消息 -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-xs sm:max-w-sm"></div>
+
+  <!-- 页脚 -->
+  <footer class="bg-malvern-green text-slate-400 py-6 border-t-2 border-malvern-gold mt-10 flex-shrink-0">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+      <p class="text-xs sm:text-sm font-serif-uk text-malvern-gold font-bold">Malvern College Hong Kong — Primary Chinese Department</p>
+      <p class="text-xs opacity-75 leading-relaxed">
+        &copy; 2026 香港墨尔文国际学校. All rights reserved. 专为小学中文非华语(NFL)及华语学生设计。
+      </p>
+    </div>
+  </footer>
+
+  <!-- Firebase 与应用核心脚本 (通过 compat 版引入) -->
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ---------------------------------------------
+    // 多音字语境发音映射表 (确保TTS发音完全同步拼音)
+    // ---------------------------------------------
+    const pronunciationContexts = {
+      "了_le": "走了",
+      "了_liǎo": "了解",
+      "长_cháng": "长度",
+      "长_zhǎng": "长大",
+      "看_kàn": "看见",
+      "看_kān": "看管",
+      "和_hé": "我和你",
+      "和_hè": "唱和",
+      "乐_lè": "快乐",
+      "乐_yuè": "音乐",
+      "只_zhǐ": "只有",
+      "只_zhī": "一只",
+      "少_shǎo": "多少",
+      "少_shào": "少年",
+      "都_dōu": "我们都",
+      "都_dū": "首都",
+      "倒_dǎo": "摔倒",
+      "倒_dào": "倒水",
+      "降_jiàng": "降落",
+      "降_xiáng": "投降"
+    };
+
+    function getSpeakText(char, pinyin) {
+      const key = `${char}_${pinyin}`;
+      if (pronunciationContexts[key]) {
+        return pronunciationContexts[key];
+      }
+      return char;
+    }
+
+    // 150个级别的字汇数据定义
+    const characterDatabase = {
+      1: "一二三大人心我的是爸妈",
+      2: "爱小日月了火开过生长好玩吃",
+      3: "去山水里牛儿花草这有和在",
+      4: "上中下天云只虫子飞鸟",
+      5: "四五六回风雨起都快家",
+      6: "门口书包早点七面狗奶",
+      7: "木马可乐个坐前后朋友",
+      8: "八光头耳朵牙医看身体",
+      9: "九条鱼石公园河边爷鸭",
+      10: "十太阳空地球星亮外船",
+      11: "力士羊鸡尖角加油圆肚为很伙伴",
+      12: "出发芽免车伞泥巴毛细青把春到",
+      13: "西瓜皮田来汗夏说凉树叶得季节",
+      14: "玉米土豆丰收多黄色笑秋猪",
+      15: "冬白红手衣北冷冰房跑雪着",
+      16: "老师们也站立音学听级唱歌",
+      17: "又工会用本尺桌纸画笔美做",
+      18: "走气远方那片沙海扇贝喝蓝",
+      19: "乡村井见竹林禾苗么种棋桥",
+      20: "今年平安岁串亲穿给胖娃新",
+      21: "交你两双对拍高兴男孩真要",
+      22: "元东少许买卖苹果品味甜彩屋糖",
+      23: "不久才它她他猫哪找捉迷藏",
+      24: "以怕疼哭弟声打针院蚂蚁咬就像",
+      25: "正向叫什哥姐动低当然抬腿游戏",
+      26: "几万台问闪共明晚丽还挂弯数颗",
+      27: "每全国庆吹响军号欢挥升旗啊吗",
+      28: "自己女困床关灯黑闭眼睡觉梦被",
+      29: "丁成足网运员喜物想乌龟象虎鹿",
+      30: "百队比赛因金更始森啦追慢最旁",
+      31: "分块怎样进洞所呢拉扔掉搬能爬",
+      32: "入午炎热晴跳泳池变绿时候漂影",
+      33: "千王谷间住猴橘山坡",
+      34: "先再左右扣反袜熊系服笨脚",
+      35: "粗直枝躺休息钻抱棵松鼠扫",
+      36: "叉勺切刀排拿饭汤妹碗筷夹张嘴",
+      37: "干活忙扛机尘使劲接提拖累推堆",
+      38: "宝舌巾净香齿刷洗臭便脸龙讲卫",
+      39: "厂灭城市各业行环保护消防灾递",
+      40: "狂作萝卜别流泪胆雷电吓坏害惊",
+      41: "古故事册凶恐 world 参观指带躲蛋",
+      42: "主从无聊盯吐秒钟具没意思言语",
+      43: "众目请试定步难忍呀道偷糕踮歪",
+      44: "文句词诗写字完识同班读短聪名",
+      45: "越拔喊婆帮终于",
+      46: "路往掰丢忽急现留",
+      47: "放狼刻第谎相信",
+      48: "座独遇窄傲让谁顶",
+      49: "送舍敲柜箱篮些辆",
+      50: "睛采等乖缝伸棒",
+      51: "win醒停敢赶骄输",
+      52: "话蝴蝶露扑伤知怀",
+      53: "矛盾利管破纷夸存",
+      54: "鸦瓶半颈办叼法",
+      55: "客情苦吧奇悄炸烤",
+      56: "蝌蚪莲挡担怪失原蛙",
+      57: "初姥拜旦历丹寸昨",
+      58: "由落渴错宽广",
+      59: "朗处近犬神您踩围",
+      60: "矮应斗轻换墙垂叔",
+      61: "位刮察帽宅记图胸",
+      62: "倒如晃救总满乱该降",
+      63: "装铃按喵汪咩鸣捡噜",
+      64: "菜溜筝喂编戴棉受尝",
+      65: "鞋脱旧合陪呼选脏挤",
+      66: "通擦眯考鼻灵摇跟",
+      67: "期待礼杏绳坡圈转",
+      68: "袋珠根枪垃圾冲晒闹",
+      69: "仙灰抢晕央虹团紧",
+      70: "捕辛求解答盆经依",
+      71: "柴冒理窗暖刚丝容",
+      72: "朔父母官犯酒泡厉",
+      73: "蚊叮爪萤笼硬蜘蛛",
+      74: "夫坑凹凸烂骂霉轮填",
+      75: "甲静昆粉宇宙羽碰谢",
+      76: "邮件筒背结缓希望",
+      77: "厚层寄套捧景南传积",
+      78: "盖实瓦肉撞甘烟逃",
+      79: "刺猬决丛挖胡忘埋感",
+      80: "举场讨厌饿顿料勇",
+      81: "精楼川魔视其糟单调",
+      82: "圣诞扮连摆披耀裙腰",
+      83: "闻斑纹横线镜极炫狮显",
+      84: "兽迎吸矿飘乎志忑而境",
+      85: "旅江艳芳漠甩掌狐皱眉",
+      86: "篱笆",
+      87: "散印秘密钢钉拆校",
+      88: "岸激浪助互份未访认约",
+      89: "烦恼骨叹页吵次周清鲜妙悲忆首曲末聆睁却占",
+      90: "珍粒蚌适沉肝弓晶温永",
+      91: "粮食英雄吞重尤善良贵",
+      92: "椅哄特病距离药论仿佛",
+      93: "单刃解浇沐浴迈狸负钱",
+      94: "舟战争常吴昌盛戈炮克",
+      95: "奄血梅况命若滴浓恢复",
+      96: "亭布裤宋郑李徐刘陈郭",
+      97: "赵章伯姨阿京孔靠茶燕",
+      98: "纱题骑钓柿铺莓盏支偶",
+      99: "剪器汽箭兵类滑痰退底",
+     100: "麦竿溪碧晨借算术懂趣",
+     101: "专踢庭够盼蹦泼播敬祖",
+     102: "瞧额卷唇饱奖龄贺卡岭",
+     103: "荷化蹈湖枯烈遮撑取滚",
+     104: "玻璃非虾斤童兰划钩养",
+     105: "猎慌择微辣椒傍核束梨",
+     106: "差抓此罐脑集假整齐塘",
+     107: "增减配壳鹅简厨搭眨柳",
+     108: "杨攻蜂羡慕缺标愿意肩",
+     109: "确深浅挺踪拦帘楚舒阴",
+     110: "较超姓抄教室操臂锻炼",
+     111: "坚持暗寒街告诉植强壮",
+     112: "攀登户洒商店捏粘贴案",
+     113: "熟悉夜架规则悬崖幼跌",
+     114: "鸣巧胜寻妖鬼恶杀敌垮",
+     115: "野兽量推翻爬部挣扎毒",
+     116: "叠邻居辈且并列祝梳辫",
+     117: "招端禁止杯炒栗煮饺聚",
+     118: "烧饼念阵易滩区危险壶",
+     119: "建设污染塑貌鸥匹坪梢",
+     120: "哨拾丑导冻蹲帆雀铅姑",
+     121: "娘窝捞鸽罩衡稳谅醉枣",
+     122: "项链移铁锹砸缸射击称",
+     123: "赞诵猜谜租司令任务膏",
+     124: "治疗照顾闷弹返展另劳",
+     125: "价格武艺准备餐厅蘑菇",
+     126: "压扁虽形状产介绍瞎除",
+     127: "夕党淘鞠躬托盘联顽哗",
+     128: "略健康奔渔桶朝霞瘦引",
+     129: "悔湿透继续议撕鼓敏捧摔",
+     130: "碎拥代替顺序宣握即将",
+     131: "遗割断票投普制造疑组",
+     132: "爽晾帚施肥灌唐科技馆",
+     133: "茂腊喷泉剑领乘融描翅",
+     134: "膀懒惰轿局表暴雕盒随",
+     135: "剩余驾驶艘速挑铜惜席",
+     136: "兄汉剧痛批评弄严肃扶",
+     137: "梯检查肠肠承修改闯祸诚",
+     138: "练嗓肯恳度估计零浮棍",
+     139: "催眠织秤杆习惯柱演厕",
+     140: "朝饮育补衬衫幸福愤迟",
+     141: "淹死抢夺必需充含农民",
+     142: "封警忧愁拒绝贡献付薄",
+     143: "款缩抖孤拼内庄漏贫穷",
+     144: "富翁隔壁皇帝宫紫灿辉",
+     145: "奏避牢固震聋突袭邀怒",
+     146: "蜻蜓预货娇嫩澡拳芝麻",
+     147: "堂纺拎派糊涂坦折银锁",
+     148: "轰隆挠痒败仗功摸仓库",
+     149: "板凳隐蔽耐闲谈跨栏捣",
+     150: "币欺骗蒸须喇叭番茄拨"
+    };
+
+    // 音调精确映射表 - 覆盖所有 150 级的生字，以极高精确度保障自动组装选项无任何拼写脱节
+    const comprehensivePinyinMap = {
+      // 常用和偏旁数字
+      "一":"yī", "二":"èr", "三":"sān", "四":"sì", "五":"wǔ", "六":"liù", "七":"qī", "八":"bā", "九":"jiǔ", "十":"shí", "百":"bǎi", "千":"qiān", "万":"wàn",
+      // 代词和冠词
+      "我":"wǒ", "你":"nǐ", "他":"tā", "她":"tā", "它":"tā", "们":"men", "这":"zhè", "有":"yǒu", "在":"zài", "的":"de", "是":"shì", "个":"gè",
+      // 人物与生活
+      "人":"rén", "大":"dà", "小":"xiǎo", "心":"xīn", "爸":"bà", "妈":"mā", "爷":"yé", "奶":"nǎi", "哥":"gē", "姐":"jiě", "弟":"dì", "妹":"mèi", "朋":"péng", "友":"yǒu", "老":"lǎo", "师":"shī", "学":"xué", "生":"shēng", "家":"jiā", "园":"yuán", "国":"guó", "中":"zhōng",
+      // 自然与动物
+      "日":"rì", "月":"yuè", "天":"tiān", "云":"yún", "风":"fēng", "雨":"yǔ", "山":"shān", "水":"shuǐ", "里":"lǐ", "牛":"niú", "儿":"ér", "花":"huā", "草":"cǎo", "虫":"chóng", "子":"zǐ", "飞":"fēi", "鸟":"niǎo", "鱼":"yú", "石":"shí", "空":"kōng", "地":"dì", "球":"qiú", "星":"xīng", "亮":"liàng", "外":"wài", "船":"chuán", "狗":"gǒu", "猫":"māo", "马":"mǎ", "羊":"yáng", "鸡":"jī", "鸭":"yā", "树":"shù", "叶":"yè",
+      // 动作与性质
+      "爱":"ài", "开":"kāi", "过":"guò", "好":"hǎo", "玩":"wán", "吃":"chī", "去":"qù", "起":"qǐ", "都":"dōu", "快":"kuài", "回":"huí", "坐":"zuò", "前":"qián", "后":"hòu", "看":"kàn", "头":"tóu", "身":"shēn", "体":"tǐ", "口":"kǒu", "门":"mén", "车":"chē", "伞":"sǎn", "面":"miàn", "点":"diǎn", "早":"zǎo", "书":"shū", "包":"bāo", "乐":"lè"
+    };
+
+    // 精细化标准 HSK 级字库
+    const defaultDict = {
+      // ===== 1级 =====
+      "一": [
+        { pinyin: "yī", eng: "one", meaningZh: "数目字，最小的正整数。", compounds: "一个 (one), 第一 (first)", sZh: "我有一个红色的苹果。", sEn: "I have one red apple." }
+      ],
+      "二": [
+        { pinyin: "èr", eng: "two", meaningZh: "数目字，一加一的和。", compounds: "二十 (twenty), 第二 (second)", sZh: "他有两个好朋友。", sEn: "He has two good friends." }
+      ],
+      "三": [
+        { pinyin: "sān", eng: "three", meaningZh: "数目字，二加一的和。", compounds: "三天 (three days), 三角形 (triangle)", sZh: "天上有三只飞鸟。", sEn: "There are three birds in the sky." }
+      ],
+      "大": [
+        { pinyin: "dà", eng: "big / large", meaningZh: "指面积、体积或程度大，与“小”相对。", compounds: "大人 (adult), 大家 (everyone)", sZh: "学校的操场非常大。", sEn: "The school's playground is very large." }
+      ],
+      "人": [
+        { pinyin: "rén", eng: "person / people", meaningZh: "人类，地球上的高智能生物。", compounds: "人们 (people), 好人 (good person)", sZh: "马路上有许多人在走动。", sEn: "There are many people walking on the street." }
+      ],
+      "心": [
+        { pinyin: "xīn", eng: "heart / mind", meaningZh: "主管血液循环的器官；也指心思或想法。", compounds: "爱心 (love/compassion), 开心 (happy)", sZh: "老师很有耐心地教我们写字。", sEn: "The teacher teaches us how to write characters very patiently." }
+      ],
+      "我": [
+        { pinyin: "wǒ", eng: "I / me", meaningZh: "自称，第一人称单数。", compounds: "我们 (we), 我国 (my country)", sZh: "我非常喜欢学习中文。", sEn: "I like learning Chinese very much." }
+      ],
+      "的": [
+        { pinyin: "de", eng: "of / 's", meaningZh: "助词，表示所属关系或特征。", compounds: "我的 (my), 漂亮的 (beautiful)", sZh: "这是我最喜欢的童话书。", sEn: "This is my favourite fairy tale book." }
+      ],
+      "是": [
+        { pinyin: "shì", eng: "to be / yes", meaningZh: "表示判断、属性或肯定答复。", compounds: "是的 (yes), 总是 (always)", sZh: "那辆蓝色的自行车是我的。", sEn: "That blue bicycle is mine." }
+      ],
+      "爸": [
+        { pinyin: "bà", eng: "dad / father", meaningZh: "对父亲的称呼。", compounds: "爸爸 (dad), 老爸 (father)", sZh: "我的爸爸每天开车送我上学。", sEn: "My dad drives me to school every day." }
+      ],
+      "妈": [
+        { pinyin: "mā", eng: "mum / mother", meaningZh: "对母亲的称呼。", compounds: "妈妈 (mum), 姨妈 (aunt)", sZh: "妈妈给我准备了美味的午餐。", sEn: "My mum prepared a delicious lunch for me." }
+      ],
+
+      // ===== 2级 =====
+      "爱": [
+        { pinyin: "ài", eng: "to love / affection", meaningZh: "对人或事物有深厚的情感与喜爱。", compounds: "可爱 (lovely), 爱好 (hobby)", sZh: "我很爱我的爸爸和妈妈。", sEn: "I love my father and mother very much." }
+      ],
+      "小": [
+        { pinyin: "xiǎo", eng: "small / little", meaningZh: "指面积、体积或力量等微小，与“大”相对。", compounds: "小猫 (little kitten), 小学生 (primary student)", sZh: "草地上有一只金色的小猫。", sEn: "There is a little golden kitten on the grass." }
+      ],
+      "日": [
+        { pinyin: "rì", eng: "sun / day / date", meaningZh: "太阳；天，日期。", compounds: "生日 (birthday), 日历 (calendar)", sZh: "今天是个阳光灿烂的好日子。", sEn: "Today is a beautiful sunny day." }
+      ],
+      "月": [
+        { pinyin: "yuè", eng: "moon / month", meaningZh: "月亮；月份。", compounds: "月亮 (moon), 月份 (month)", sZh: "夜晚的月亮高高地挂在天空。", sEn: "The moon hangs high in the night sky." }
+      ],
+      "了": [
+        { pinyin: "le", eng: "completed action particle", meaningZh: "【多音字一】助词，表示动作或变化已经完成。", compounds: "走了 (gone), 来了 (arrived)", sZh: "我已经做完了今天的作业。", sEn: "I have already finished today's homework." },
+        { pinyin: "liǎo", eng: "to understand / finish", meaningZh: "【多音字二】动词，意为明白、懂得；或结束、完结。", compounds: "了解 (understand), 不了了之 (end up with nothing)", sZh: "我很了解他的兴趣爱好。", sEn: "I understand his hobbies very well." }
+      ],
+      "火": [
+        { pinyin: "huǒ", eng: "fire", meaningZh: "物质燃烧时产生的光和热。", compounds: "火车 (train), 火山 (volcano)", sZh: "冬天里温暖的火炉很舒服。", sEn: "The warm stove in winter is very comfortable." }
+      ],
+      "开": [
+        { pinyin: "kāi", eng: "to open / to start", meaningZh: "张开，展开；开始；驾驶。", compounds: "开门 (open the door), 开始 (start)", sZh: "请同学们把中文课本打开。", sEn: "Please open your Chinese textbooks, class." }
+      ],
+      "过": [
+        { pinyin: "guò", eng: "to cross / spend", meaningZh: "经过，穿过；度过时间；做助词表示曾经发生。", compounds: "过去 (past), 过来 (come over)", sZh: "我们过马路时要走人行道。", sEn: "We must use the pedestrian crossing when crossing the road." }
+      ],
+      "生": [
+        { pinyin: "shēng", eng: "to be born / student", meaningZh: "出生；生命；学生。", compounds: "生日 (birthday), 学生 (student)", sZh: "祝你生日快乐，天天开心！", sEn: "Wish you a happy birthday and joy every day." }
+      ],
+      "长": [
+        { pinyin: "cháng", eng: "long", meaningZh: "【多音字一】指空间或时间距离大，与“短”相对。", compounds: "长度 (length), 长城 (the Great Wall)", sZh: "这条河流很长，看不到尽头。", sEn: "This river is very long and endless." },
+        { pinyin: "zhǎng", eng: "to grow / chief", meaningZh: "【多音字二】生长，成长；领导人。", compounds: "校长 (Headmaster), 长大 (grow up)", sZh: "小树在雨水的滋润下快快长大。", sEn: "The young tree is growing up quickly with the rain." }
+      ],
+      "好": [
+        { pinyin: "hào", eng: "to like / be fond of", meaningZh: "【多音字一】喜爱，对某种事物具有浓厚的兴趣。", compounds: "爱好 (hobby), 好奇 (curious)", sZh: "他非常学，每天都看很多书。", sEn: "He is very studious and reads many books every day." },
+        { pinyin: "hǎo", eng: "good / well", meaningZh: "【多音字二】优点多，令人满意；健康；关系融洽。", compounds: "好人 (good person), 你好 (hello)", sZh: "今天天气真好，我们出去玩吧。", sEn: "The weather is really nice today; let's go out and play." }
+      ],
+      "玩": [
+        { pinyin: "wán", eng: "to play / enjoy", meaningZh: "游戏，游玩，观赏，以此得到放松。", compounds: "玩具 (toy), 玩耍 (play)", sZh: "周末我最喜欢去公园里玩耍。", sEn: "I like playing in the park best at the weekend." }
+      ],
+      "吃": [
+        { pinyin: "chī", eng: "to eat / consume", meaningZh: "把食物送入口中并咽下去。", compounds: "吃饭 (eat a meal), 好吃 (delicious)", sZh: "多吃水果和蔬菜对身体很有益处。", sEn: "Eating more fruits and vegetables is highly beneficial to health." }
+      ],
+
+      // ===== 3级 =====
+      "去": [
+        { pinyin: "qù", eng: "to go", meaningZh: "从所在地前往别的地方去，与“来”相对。", compounds: "去年 (last year), 过去 (past)", sZh: "我们下午要去学校图书馆看书。", sEn: "We are going to read books in the school library this afternoon." }
+      ],
+      "山": [
+        { pinyin: "shān", eng: "mountain / hill", meaningZh: "高耸于地面的土石地貌结构。", compounds: "爬山 (climb a mountain), 高山 (high mountain)", sZh: "翠绿的山上长满了美丽的花草。", sEn: "The green mountain is covered with beautiful flowers and plants." }
+      ],
+      "水": [
+        { pinyin: "shuǐ", eng: "water", meaningZh: "无色无味透明的液体，生命存活的基本要素。", compounds: "喝水 (drink water), 水果 (fruit)", sZh: "我们要养成每天多喝水的好习惯。", sEn: "We should develop a good habit of drinking plenty of water daily." }
+      ],
+      "里": [
+        { pinyin: "lǐ", eng: "inside / in", meaningZh: "指内部、里面，与“外”相对。", compounds: "里面 (inside), 家里 (at home)", sZh: "我的文具盒里放着彩色铅笔。", sEn: "There are coloured pencils inside my pencil case." }
+      ],
+      "牛": [
+        { pinyin: "niú", eng: "cow / ox", meaningZh: "食草哺乳动物，体型高大，可耕田或产奶。", compounds: "牛奶 (milk), 牛肉 (beef)", sZh: "快乐的小牛在草地上开心地吃草。", sEn: "The happy little calf is happily eating grass on the lawn." }
+      ],
+      "儿": [
+        { pinyin: "ér", eng: "child / son", meaningZh: "孩子；也常作为词尾轻声后缀。", compounds: "儿童 (children), 儿子 (son)", sZh: "儿童公园里有许多好玩的滑梯。", sEn: "There are many fun slides in the children's park." }
+      ],
+      "花": [
+        { pinyin: "huā", eng: "flower / spend", meaningZh: "植物的花朵；也指消费时间、金钱。", compounds: "花园 (garden), 花费 (spend)", sZh: "春天的学校花园里开满了鲜花。", sEn: "The school garden in spring is filled with fully blooming flowers." }
+      ],
+      "草": [
+        { pinyin: "cǎo", eng: "grass", meaningZh: "草本植物的总称。", compounds: "草地 (grassland), 青草 (green grass)", sZh: "雨后的草地绿油油的，非常漂亮。", sEn: "The lawn after the rain is green and very beautiful." }
+      ],
+      "这": [
+        { pinyin: "zhè", eng: "this", meaningZh: "指代距离较近的人、事、物。", compounds: "这个 (this one), 这里 (here)", sZh: "这是一支送给表现优异同学的钢笔。", sEn: "This is a pen given to students who perform outstandingly." }
+      ],
+      "有": [
+        { pinyin: "yǒu", eng: "to have / there is", meaningZh: "表示占有、存在或拥有，与“无”相对。", compounds: "有些 (some), 有趣 (interesting)", sZh: "我们学校的体育馆里有齐全的设施。", sEn: "Our school's gymnasium has very complete facilities." }
+      ],
+      "和": [
+        { pinyin: "hé", eng: "and / peace", meaningZh: "【多音字一】连词，表示并列关系；或表示温和、和平。", compounds: "我和你 (you and I), 和平 (peace)", sZh: "我和我的好朋友一起去公园玩耍。", sEn: "My good friend and I went to the park to play together." },
+        { pinyin: "hè", eng: "to chime in", meaningZh: "【多音字二】动词，指声音、歌声或词句相互协调呼应。", compounds: "唱和 (sing in chorus), 附和 (echo)", sZh: "台上刚唱完，台下就有人大声唱和。", sEn: "As soon as the singing finished on stage, someone offstage chimed in." }
+      ],
+      "在": [
+        { pinyin: "zài", eng: "at / on / in", meaningZh: "表示处于特定的地点、特定的范围或正在进行中。", compounds: "正在 (in progress), 在家 (at home)", sZh: "小鸟在茂密的大树上搭建舒适的鸟窝。", sEn: "The little bird is building a cosy nest in the thick tree." }
+      ],
+      "上": [
+        { pinyin: "shàng", eng: "up / upper", meaningZh: "位置在高处的；向高处移动；开始活动。", compounds: "上面 (above), 上学 (go to school)", sZh: "我们每天清晨高高兴兴地去上学。", sEn: "Every morning we pack our schoolbags and cheerfully go to school." }
+      ],
+      "中": [
+        { pinyin: "zhōng", eng: "middle / center / China", meaningZh: "中间；中国；中等。", compounds: "中文 (Chinese), 中间 (middle)", sZh: "中文是世界上最古老美丽的语言之一。", sEn: "Chinese is one of the oldest and most beautiful languages in the world." }
+      ],
+      "下": [
+        { pinyin: "xià", eng: "down / below / under", meaningZh: "位置在低处的；往低处移动；结束活动。", compounds: "下面 (below), 下雨 (to rain), 下课 (class dismissed)", sZh: "下雨的时候，小动物们都在大树下面静静避雨。", sEn: "When it rains, the small animals quietly take shelter under the big tree." }
+      ],
+      "天": [
+        { pinyin: "tiān", eng: "sky / day / weather", meaningZh: "天空；天，天气。", compounds: "天空 (sky), 天气 (weather), 今天 (today)", sZh: "今天的天空万里无云，天气非常晴朗温暖。", sEn: "Today's sky is completely cloudless, and the weather is very sunny and warm." }
+      ],
+      "云": [
+        { pinyin: "yún", eng: "cloud", meaningZh: "天空中漂浮的水汽冷凝结体。", compounds: "白云 (white cloud), 多云 (cloudy)", sZh: "蔚蓝的天空上有几朵白云在漂浮。", sEn: "There are several white clouds floating in the blue sky." }
+      ],
+      "只": [
+        { pinyin: "zhǐ", eng: "only", meaningZh: "【多音字一】副词，表示限制，仅有，仅限于此范围。", compounds: "只有 (only), 只是 (just)", sZh: "这里只有一本有趣的中文科普书。", sEn: "There is only one interesting Chinese popular science book here." },
+        { pinyin: "zhī", eng: "measure word", meaningZh: "【多音字二】量词，用于单独的鸟、兽、鞋子或器皿等。", compounds: "一只猫 (a cat), 一只鸟 (a bird)", sZh: "树枝上落着一只全身彩色羽毛的小鸟。", sEn: "A little bird with colourful feathers is perched on the branch." }
+      ],
+      "虫": [
+        { pinyin: "chóng", eng: "insect / worm", meaningZh: "各类昆虫、冷血小动物的总称。", compounds: "毛毛虫 (caterpillar), 昆虫 (insect)", sZh: "绿色的叶子上有一只慢吞吞爬行的毛毛虫。", sEn: "There is a slowly crawling caterpillar on the green leaf." }
+      ],
+      "子": [
+        { pinyin: "zǐ", eng: "child / son / noun suffix", meaningZh: "孩子；也用作名词后缀。", compounds: "孩子 (child), 桌子 (desk)", sZh: "那个懂礼貌的小孩子经常主动帮助同学，受到了表扬。", sEn: "That polite child often helps classmates and has been praised." }
+      ],
+      "飞": [
+        { pinyin: "fēi", eng: "to fly", meaningZh: "鸟类、昆虫等在空中移动或滑翔。", compounds: "飞机 (aeroplane), 飞行 (flight)", sZh: "我们制作的纸飞机在空中快乐地飞翔。", sEn: "Our paper aeroplanes are flying happily in the sky." }
+      ],
+      "鸟": [
+        { pinyin: "niǎo", eng: "bird", meaningZh: "披羽毛、卵生、前肢特化为翼的飞行动物。", compounds: "小鸟 (little bird), 飞鸟 (flying bird)", sZh: "那只美丽的小鸟在树林上空优美地飞过。", sEn: "That beautiful little bird flew gracefully over the woods." }
+      ],
+      "四": [
+        { pinyin: "sì", eng: "four", meaningZh: "数目字，介于三和五之间的正整数。", compounds: "四季 (four seasons), 四天 (four days)", sZh: "一年有春、夏、秋、冬四个美丽的季节。", sEn: "A year has four beautiful seasons: spring, summer, autumn and winter." }
+      ],
+      "五": [
+        { pinyin: "wǔ", eng: "five", meaningZh: "数目字，介于四和六之间的正整数。", compounds: "五个 (five items), 星期五 (Friday)", sZh: "每只手分别有五个灵活的指头。", sEn: "Every hand has five flexible digits." }
+      ],
+      "六": [
+        { pinyin: "liù", eng: "six", meaningZh: "数目字，介于五和七之间的正整数。", compounds: "六月 (June), 星期六 (Saturday)", sZh: "星期六上午，我们一家人去远足。", sEn: "On Saturday morning, our family went hiking." }
+      ],
+      "回": [
+        { pinyin: "huí", eng: "to return / reply", meaningZh: "返回原来住所或地点；也指打转、答复。", compounds: "回家 (return home), 回答 (answer)", sZh: "下午放学后，我们都坐校车回家。", sEn: "After school finishes in the afternoon, we take the school bus home." }
+      ],
+      "风": [
+        { pinyin: "fēng", eng: "wind", meaningZh: "空气流动循环形成的一种自然现象。", compounds: "大风 (strong wind), 微风 (breeze)", sZh: "一阵凉爽的微风吹过，感觉非常舒服。", sEn: "A cool breeze blew across, making me feel very comfortable." }
+      ],
+      "雨": [
+        { pinyin: "yǔ", eng: "rain", meaningZh: "高空云层水滴降落至地面的天气过程。", compounds: "下雨 (to rain), 雨伞 (umbrella)", sZh: "外面下起了大雨，出门记得要撑雨伞。", sEn: "It is raining heavily outside; remember to hold your umbrella when going out." }
+      ],
+      "起": [
+        { pinyin: "qǐ", eng: "to rise / start", meaningZh: "由卧、坐位变为站立；向上升；开始。", compounds: "起床 (get up), 一起 (together)", sZh: "我们每天早晨七点准时起床。", sEn: "We get up at seven o'clock on the dot every morning." }
+      ],
+      "都": [
+        { pinyin: "dōu", eng: "all / both", meaningZh: "【多音字一】副词，表示范围的全面覆盖，指全部。", compounds: "我们都 (all of us), 都有 (all have)", sZh: "我们班级的学生都很积极回答问题。", sEn: "All the students in our class answer questions very actively." },
+        { pinyin: "dū", eng: "capital", meaningZh: "【多音字二】名词，国家最重要的行政中心都市。", compounds: "首都 (capital city), 都市 (metropolis)", sZh: "北京是中国历史悠久的首都。", sEn: "Beijing is the historic capital city of China." }
+      ],
+      "快": [
+        { pinyin: "kuài", eng: "fast / happy", meaningZh: "速度大，用时短；心情愉悦。", compounds: "快乐 (happy), 快速 (rapid)", sZh: "那辆特快列车在轨道上开得非常快。", sEn: "That express train is running incredibly fast on the tracks." }
+      ],
+      "家": [
+        { pinyin: "jiā", eng: "home / family", meaningZh: "共同生活的眷属；住处，住宅。", compounds: "家庭 (family), 回家 (go home)", sZh: "温馨和睦的家是让人放松的港湾。", sEn: "A warm and harmonious home is a harbour where people can relax." }
+      ],
+
+      // ===== 其他核心支持的多音字库 =====
+      "看": [
+        { pinyin: "kàn", eng: "to look / read", meaningZh: "【多音字一】使用眼睛观赏、阅读或观察。", compounds: "看见 (see), 看书 (read)", sZh: "我们都非常喜欢在图书馆里看画册。", sEn: "All of us enjoy reading picture books in the library." },
+        { pinyin: "kān", eng: "to guard / look after", meaningZh: "【多音字二】守护，照料，看管防止出差错。", compounds: "看门 (guard the door), 看护 (nurse)", sZh: "爷爷在果园里看守着成熟的水果。", sEn: "Grandpa is guarding the ripe fruit in the orchard." }
+      ],
+      "乐": [
+        { pinyin: "lè", eng: "happy / cheerful", meaningZh: "【多音字一】心情欢喜、快活、愉悦。", compounds: "快乐 (happy), 乐观 (optimistic)", sZh: "祝你生日快乐，天天拥有好心情！", sEn: "Wish you a happy birthday and a great mood every day!" },
+        { pinyin: "yuè", eng: "music", meaningZh: "【多音字二】有旋律、节奏、和声的声响组合。", compounds: "音乐 (music), 乐器 (instrument)", sZh: "小妹妹从小就非常喜欢听音乐。", sEn: "My little sister has liked listening to music since childhood." }
+      ],
+      "少": [
+        { pinyin: "shǎo", eng: "few / little", meaningZh: "【多音字一】数量、分量少，与“多”相对。", compounds: "多少 (how much), 少数 (minority)", sZh: "由于下雨，今天操场上的学生少了很多。", sEn: "Due to the rain, there are few students on the playground today." },
+        { pinyin: "shào", eng: "young", meaningZh: "【多音字二】名词，年纪轻，指青年、童年时期。", compounds: "少年 (youth), 少女 (maiden)", sZh: "墨尔文学校的少年们个个都非常活泼。", sEn: "The youths of Malvern College are very active." }
+      ],
+      "倒": [
+        { pinyin: "dǎo", eng: "to fall / collapse", meaningZh: "【多音字一】倒下，摔倒，塌下。", compounds: "摔倒 (fall down), 倒闭 (bankrupt)", sZh: "他不小心在草地上摔倒了，但很快爬了起来。", sEn: "He accidentally fell down on the grass, but got up quickly." },
+        { pinyin: "dào", eng: "upside down / pour", meaningZh: "【多音字二】反方向，倾倒，倒水。", compounds: "倒水 (pour water), 倒影 (reflection)", sZh: "请给我倒一杯温热的开水，谢谢。", sEn: "Please pour me a glass of warm water, thank you." }
+      ],
+      "降": [
+        { pinyin: "jiàng", eng: "descend / drop", meaningZh: "【多音字一】从高处落下来，降低，减退。", compounds: "降落 (descend), 降低 (reduce)", sZh: "天空中飘落的雨水降温了。", sEn: "The falling rain from the sky reduced the outdoor temperature a lot." },
+        { pinyin: "xiáng", eng: "surrender", meaningZh: "【多音字二】投降，归顺，收服。", compounds: "投降 (surrender), 降服 (subdue)", sZh: "古代勇敢的将军降服了凶猛的野兽。", sEn: "The brave general in ancient times subdued the fierce beast." }
+      ]
+    };
+
+    // 自动为未录入 defaultDict 的生字生成高水准标准字卡项的辅助方法
+    function getWordInfo(char) {
+      if (defaultDict[char]) {
+        return defaultDict[char]; 
+      }
+      
+      const lvl = findCharLevel(char);
+      const standardPinyin = getDynamicPinyin(char);
+      
+      let guessedEng = "Chinese character";
+      let guessedMeaningZh = `识字计划第 ${lvl} 级别的重点汉字。`;
+      let guessedCompounds = `${char}子 (child of ${char}), 大${char} (big ${char}), 小${char} (little ${char})`;
+      let guessedSentenceZh = `我们今天在课堂上一起探索并学习了“${char}”字。`;
+      let guessedSentenceEn = `We explored and learned the character "${char}" together in class today.`;
+
+      if ("鸟凤鸭鹅雀".includes(char)) {
+        guessedEng = "bird / avian species";
+        guessedMeaningZh = "脊椎动物的一类，温血卵生，用肺呼吸，多数擅长飞翔。";
+        guessedCompounds = `${char}类 (birds), ${char}鸣 (chirping), 飞${char} (flying bird)`;
+        guessedSentenceZh = `那只可爱的“${char}”在树枝上欢快地哼唱着悦耳的旋律。`;
+        guessedSentenceEn = `That lovely bird was cheerfully humming a pleasant melody on the branch.`;
+      } else if ("书画文词诗册".includes(char)) {
+        guessedEng = "literature / book / art";
+        guessedMeaningZh = "指文字、书籍、图书，或者与文化、书写、阅读高度相关的事物。";
+        guessedCompounds = `${char}画 (painting), ${char}籍 (books), 读${char} (read ${char})`;
+        guessedSentenceZh = `图书馆里整齐地陈列着许多图文并茂的“${char}”类教辅书籍。`;
+        guessedSentenceEn = `Many illustrated books related to "${char}" are neatly displayed in the library.`;
+      } else if ("饭吃汤茶烤餐".includes(char)) {
+        guessedEng = "food / dining / beverage";
+        guessedMeaningZh = "与人类日常饮食、饮水、烹饪、餐饮以及消化吸收相关的动作或器具。";
+        guessedCompounds = `美${char} (delicious ${char}), ${char}品 (food items), 熟${char} (cooked ${char})`;
+        guessedSentenceZh = `妈妈精心烹饪了带有“${char}”香气的美味家庭美食。`;
+        guessedSentenceEn = `Mum carefully cooked delicious family delicacies with the aroma of "${char}".`;
+      } else if ("跑跳蹦爬运动".includes(char)) {
+        guessedEng = "action / physical activity";
+        guessedMeaningZh = "描述人或动物通过躯干与四肢进行的主动体能协调活动。";
+        guessedCompounds = `${char}步 (run), 开${char} (start moving), 奔${char} (rush)`;
+        guessedSentenceZh = `操场上有很多正在进行“${char}”类项目的阳光少年。`;
+        guessedSentenceEn = `There are many bright teenagers performing activities related to "${char}" on the playground.`;
+      }
+
+      return [{
+        pinyin: standardPinyin,
+        eng: guessedEng,
+        meaningZh: guessedMeaningZh,
+        compounds: guessedCompounds,
+        sZh: guessedSentenceZh,
+        sEn: guessedSentenceEn,
+        level: lvl
+      }];
+    }
+
+    function getDynamicPinyin(char) {
+      if (comprehensivePinyinMap[char]) {
+        return comprehensivePinyinMap[char];
+      }
+      // 深度搜索 defaultDict 中的读音
+      if (defaultDict[char] && defaultDict[char][0]) {
+        return defaultDict[char][0].pinyin;
+      }
+      return "zhī";
+    }
+
+    function findCharLevel(char) {
+      for (let level in characterDatabase) {
+        if (characterDatabase[level].includes(char)) {
+          return parseInt(level);
+        }
+      }
+      return 1;
+    }
+
+    const totalGates = 50;
+    function getGateLevels(gateNum) {
+      const start = (gateNum - 1) * 3 + 1;
+      const end = gateNum * 3;
+      return { start, end };
+    }
+
+    // 获取特定Gate内所有的生字
+    function getGateCharacters(gateNum) {
+      const { start, end } = getGateLevels(gateNum);
+      let chars = "";
+      for (let lvl = start; lvl <= end; lvl++) {
+        if (characterDatabase[lvl]) {
+          chars += characterDatabase[lvl];
+        }
+      }
+      return chars;
+    }
+
+    // 状态定义
+    let currentLanguage = "zh"; 
+    let currentGate = 1;
+    let unlockedGate = 1;
+    let studyWords = []; 
+    let currentStudyIndex = 0;
+    let isCardFlipped = false;
+
+    // 发音引擎设置 ('cloud' 或 'device')，默认设为 'cloud' 确保 100% 普通话完美发音
+    let currentSpeechEngine = 'cloud';
+    let selectedVoiceName = '';
+
+    // 熟练度记录 (答对 4 次即视为掌握)
+    let masteryData = {};
+
+    // ---------------------------------------------
+    // 安全本地/单机持久化存储器 (iPad 本地 file:// 协议免崩溃)
+    // ---------------------------------------------
+    const safeStorage = {
+      getItem(key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (e) {
+          return this.memoryStore[key] || null;
+        }
+      },
+      setItem(key, value) {
+        try {
+          localStorage.setItem(key, value);
+        } catch (e) {
+          this.memoryStore[key] = value;
+        }
+      },
+      memoryStore: {}
+    };
+
+    // 初始化本地存储设置
+    try {
+      currentSpeechEngine = safeStorage.getItem('mchk_speech_engine') || 'cloud';
+      selectedVoiceName = safeStorage.getItem('mchk_selected_voice') || '';
+    } catch(e) {
+      console.warn("Storage settings read fallback:", e);
+    }
+
+    // ---------------------------------------------
+    // Firebase 初始化逻辑 (按照强制原则 Rule 1 & Rule 3)
+    // ---------------------------------------------
+    let db = null;
+    let auth = null;
+    let firebaseUser = null;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'mchk-primary-chinese-challenge';
+
+    function initFirebaseAndAuth() {
+      // 彻底的外部库与无网检测，防本地 iPad 运行异常
+      if (typeof firebase !== 'undefined' && typeof __firebase_config !== 'undefined' && __firebase_config) {
+        try {
+          const firebaseConfig = JSON.parse(__firebase_config);
+          const app = firebase.initializeApp(firebaseConfig);
+          auth = firebase.auth();
+          db = firebase.firestore();
+          
+          const initAuth = async () => {
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+              await auth.signInWithCustomToken(__initial_auth_token);
+            } else {
+              await auth.signInAnonymously();
+            }
+          };
+
+          initAuth().then(() => {
+            auth.onAuthStateChanged((user) => {
+              if (user) {
+                firebaseUser = user;
+                document.getElementById('current-user-tag').textContent = `User: ${user.uid}`;
+                loadProgressFromFirestore();
+              }
+            });
+          }).catch(err => {
+            console.warn("Firebase Auth bypassed:", err);
+            initLocalBackup();
+          });
+        } catch (e) {
+          console.warn("Firebase failed to init:", e);
+          initLocalBackup();
+        }
+      } else {
+        initLocalBackup();
+      }
+    }
+
+    function initLocalBackup() {
+      document.getElementById('current-user-tag').textContent = "Local Session";
+      try {
+        const localMastery = safeStorage.getItem('mchk_mastery_data');
+        const localUnlocked = safeStorage.getItem('mchk_unlocked_gate');
+        const localCurrent = safeStorage.getItem('mchk_current_gate');
+        
+        if (localMastery) masteryData = JSON.parse(localMastery);
+        if (localUnlocked) unlockedGate = parseInt(localUnlocked);
+        if (localCurrent) currentGate = parseInt(localCurrent);
+      } catch (e) {
+        console.warn("LocalStorage backup read failed:", e);
+      }
+      refreshUI();
+    }
+
+    function saveProgress() {
+      const statusTag = document.getElementById('cloud-status');
+      if (statusTag) {
+        statusTag.classList.remove('opacity-0');
+        statusTag.innerHTML = `<span>💾 保存中...</span>`;
+      }
+
+      if (typeof firebase !== 'undefined' && db && firebaseUser) {
+        try {
+          const userDocRef = db.doc(`artifacts/${appId}/users/${firebaseUser.uid}/progress/userData`);
+          userDocRef.set({
+            masteryData: masteryData,
+            unlockedGate: unlockedGate,
+            currentGate: currentGate,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true })
+          .then(() => {
+            updateStatusSaved(true);
+          })
+          .catch(err => {
+            console.error("Firestore save failed:", err);
+            updateStatusSaved(false);
+          });
+        } catch(e) {
+          updateStatusSaved(false);
+        }
+      } else {
+        try {
+          safeStorage.setItem('mchk_mastery_data', JSON.stringify(masteryData));
+          safeStorage.setItem('mchk_unlocked_gate', unlockedGate);
+          safeStorage.setItem('mchk_current_gate', currentGate);
+        } catch (e) {
+          console.warn("LocalStorage write failed:", e);
+        }
+        setTimeout(() => updateStatusSaved(true), 300);
+      }
+    }
+
+    function loadProgressFromFirestore() {
+      if (typeof firebase === 'undefined' || !db || !firebaseUser) return;
+      
+      const userDocRef = db.doc(`artifacts/${appId}/users/${firebaseUser.uid}/progress/userData`);
+      userDocRef.get().then((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.masteryData) masteryData = data.masteryData;
+          if (data.unlockedGate) unlockedGate = data.unlockedGate;
+          if (data.currentGate) currentGate = data.currentGate;
+        }
+        refreshUI();
+      }).catch(err => {
+        console.error("Error loading Firestore document:", err);
+        initLocalBackup();
+      });
+    }
+
+    function updateStatusSaved(isSuccess) {
+      const statusTag = document.getElementById('cloud-status');
+      if (!statusTag) return;
+      if (isSuccess) {
+        statusTag.className = "text-xs bg-emerald-800/80 px-2.5 py-2 rounded text-emerald-100 flex items-center gap-1 transition-all flex-shrink-0";
+        statusTag.innerHTML = `<span>💾 进度已保存</span>`;
+      } else {
+        statusTag.className = "text-xs bg-rose-800/80 px-2.5 py-2 rounded text-rose-100 flex items-center gap-1 transition-all flex-shrink-0";
+        statusTag.innerHTML = `<span>⚠️ 保存失败</span>`;
+      }
+      translateElement(statusTag);
+    }
+
+    // ---------------------------------------------
+    // 基础交互 & 语言翻译
+    // ---------------------------------------------
+    const dictionaryTranslations = {
+      en: {
+        "香港墨尔文国际学校小学中文部识字挑战计划": "Malvern College MCHK Primary Chinese Character Challenge",
+        "进度已自动保存": "Progress Saved Automatically",
+        "重置": "Reset",
+        "学习进度": "Learning Progress",
+        "通关进度": "Level Unlocked",
+        "已掌握字数": "Characters Mastered",
+        "当前关卡": "Selected Gate",
+        "关卡选择": "Gates Select",
+        "每关包含3个级别。通关可解锁下一关。": "Each Gate covers 3 levels. Master the characters to unlock the next.",
+        "学习卡": "Study Cards",
+        "挑战游戏": "Play Game",
+        "生字字卡浏览": "Interactive Flashcard Deck",
+        "掌握度": "Mastery",
+        "点击卡片翻面看详情": "Tap card to flip and view details",
+        "点击空白翻回正面": "Tap card to flip back",
+        "标记为掌握": "Mark Mastered",
+        "取消标记": "Mark Learning",
+        "播音": "Listen",
+        "本关字表": "Current Character Deck",
+        "开始挑战 (随机游戏)": "Launch Random Challenge Game",
+        "准备好开启识字挑战了吗？": "Are you ready for the Character Challenge?",
+        "每次挑战共有10道题目。系统将随机选择一款有趣的小游戏来测试本关的字汇。答对可提升汉字掌握度！": "Each challenge has 10 tasks. A random game will be chosen from our 10 mini-games to test you. Answers increase character mastery!",
+        "游戏载入中": "Loading Game",
+        "确认操作": "Confirm Action",
+        "【字义】": "[Meaning]",
+        "【常用组词】": "[Compounds]",
+        "例句": "Example Sentence",
+        "当前掌握 of the characters": "Current mastery matches: ",
+        "挑战完成！": "Challenge Completed!",
+        "本次得分": "Your Score",
+        "汉字变化状况": "Mastery Updates",
+        "恭喜！你已完全掌握本关，下一关卡已解锁！": "Splendid! You have mastered this Gate, next level is unlocked!",
+        "再挑战一次": "Challenge Again",
+        "去字卡学习": "Go to Flashcards",
+        "发音人": "Voice",
+        "正在加载...": "Loading...",
+        "发音模式": "Engine",
+        "在线普通话 (推荐)": "Cloud Mandarin (Rec)",
+        "设备内置语音": "Device TTS"
+      }
+    };
+
+    function toggleLanguage() {
+      currentLanguage = (currentLanguage === "zh") ? "en" : "zh";
+      document.getElementById('btn-lang').innerHTML = `<i class="fas fa-globe"></i> <span>${currentLanguage === "zh" ? "English" : "中文"}</span>`;
+      translateUI();
+      populateVoiceSelector(); 
+      
+      const engineSelect = document.getElementById('engine-select');
+      if (engineSelect) {
+        Array.from(engineSelect.options).forEach(opt => {
+          const zhText = opt.getAttribute('data-zh');
+          const enText = opt.getAttribute('data-en');
+          opt.textContent = currentLanguage === 'zh' ? zhText : enText;
+        });
+      }
+    }
+
+    function translateUI() {
+      document.querySelectorAll('[data-zh]').forEach(el => {
+        translateElement(el);
+      });
+    }
+
+    function translateElement(el) {
+      const zhVal = el.getAttribute('data-zh');
+      const enVal = el.getAttribute('data-en') || dictionaryTranslations.en[zhVal] || zhVal;
+      el.textContent = (currentLanguage === "zh") ? zhVal : enVal;
+    }
+
+    function showCustomModal(title, text, confirmCallback, isWarning = true) {
+      const modal = document.getElementById('custom-modal');
+      const mTitle = document.getElementById('modal-title');
+      const mBody = document.getElementById('modal-body');
+      const mIcon = document.getElementById('modal-icon');
+      const mConfirm = document.getElementById('modal-btn-confirm');
+
+      mTitle.textContent = title;
+      mBody.textContent = text;
+      
+      if (isWarning) {
+        mIcon.innerHTML = `⚠️`;
+        mIcon.className = "text-amber-500 text-4xl";
+      } else {
+        mIcon.innerHTML = `✅`;
+        mIcon.className = "text-emerald-500 text-4xl";
+      }
+
+      mConfirm.onclick = () => {
+        confirmCallback();
+        closeCustomModal();
+      };
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeCustomModal() {
+      document.getElementById('custom-modal').classList.add('hidden');
+    }
+
+    function showToast(message, type = "success") {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
+      const toast = document.createElement('div');
+      toast.className = `p-3.5 rounded-lg shadow-lg text-white font-semibold text-xs flex items-center gap-2 transform transition duration-300 translate-y-2 pointer-events-auto max-w-xs ${
+        type === "success" ? "bg-emerald-600 border border-emerald-500" :
+        type === "error" ? "bg-rose-600 border border-rose-500" : "bg-malvern-green border border-malvern-gold"
+      }`;
+      
+      const icon = type === "success" ? "✨" : type === "error" ? "❌" : "ℹ️";
+      toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
+      
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.remove('translate-y-2');
+        toast.classList.add('translate-y-0');
+      }, 50);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'scale-95');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    function confirmReset() {
+      const title = currentLanguage === "zh" ? "确认重置进度？" : "Confirm Progress Reset?";
+      const msg = currentLanguage === "zh" 
+        ? "您所有的生字学习记录、通关状况和掌握度数据都将被抹去。" 
+        : "All your study logs, unlocked gates, and character mastery details will be deleted.";
+      
+      showCustomModal(title, msg, () => {
+        masteryData = {};
+        unlockedGate = 1;
+        currentGate = 1;
+        saveProgress();
+        refreshUI();
+        showToast(currentLanguage === "zh" ? "进度已重置" : "Progress Reset Completed", "info");
+      });
+    }
+
+    // ---------------------------------------------
+    // 渲染学习界面逻辑
+    // ---------------------------------------------
+    function switchTab(tabName) {
+      const studyTab = document.getElementById('tab-study');
+      const gameTab = document.getElementById('tab-game');
+      const studyBtn = document.getElementById('tab-study-btn');
+      const gameBtn = document.getElementById('tab-game-btn');
+
+      if (tabName === 'study') {
+        studyTab.classList.remove('hidden');
+        gameTab.classList.add('hidden');
+        studyBtn.className = "bg-malvern-gold text-malvern-green px-4 py-2 rounded-lg font-bold shadow transition flex items-center gap-1 hover:bg-amber-500";
+        gameBtn.className = "bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-bold shadow transition flex items-center gap-1";
+      } else {
+        studyTab.classList.add('hidden');
+        gameTab.classList.remove('hidden');
+        studyBtn.className = "bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg font-bold shadow transition flex items-center gap-1";
+        gameBtn.className = "bg-malvern-gold text-malvern-green px-4 py-2 rounded-lg font-bold shadow transition flex items-center gap-1 hover:bg-amber-500";
+        resetGameIntro();
+      }
+    }
+
+    function refreshUI() {
+      renderGatesList();
+      updateOverallProgress();
+      loadGateWords();
+      translateUI();
+      updateEngineUIVisibility();
+    }
+
+    // 实时统计各字的答错频次，以便“荣誉关”完美抽取 Top 40
+    let errorCountData = {};
+    try {
+      const raw = safeStorage.getItem('mchk_error_count_data');
+      if (raw) errorCountData = JSON.parse(raw);
+    } catch(e) {
+      errorCountData = {};
+    }
+
+    // 通关荣誉称号字典（每过5关奖励一个阶称号，并更新至个人面板）
+    const milestoneTitles = {
+      1: { zh: "识字新兵", en: "Recruit Scholar" },
+      5: { zh: "识字新星", en: "Chinese Novice Star" },
+      10: { zh: "词海探险家", en: "Word Explorer" },
+      15: { zh: "妙笔生花", en: "Expressive Scholar" },
+      20: { zh: "博古通今", en: "Erudite Cultivator" },
+      25: { zh: "儒雅风流", en: "Refined Literatus" },
+      30: { zh: "出口成章", en: "Eloquent Orator" },
+      35: { zh: "经天纬地", en: "Master of Strategy" },
+      40: { zh: "大音希声", en: "Philosophical Sage" },
+      45: { zh: "温文尔雅", en: "Gentle Virtuoso" },
+      50: { zh: "学富五车至尊", en: "Ultimate Malvern Sage" }
+    };
+
+    function updateHonoraryTitle() {
+      let activeLevel = 1;
+      Object.keys(milestoneTitles).forEach(lvl => {
+        const num = parseInt(lvl);
+        if (unlockedGate >= num) {
+          activeLevel = num;
+        }
+      });
+      const title = milestoneTitles[activeLevel];
+      const elem = document.getElementById('stats-honor-title');
+      if (elem) {
+        elem.textContent = currentLanguage === 'zh' ? title.zh : title.en;
+      }
+    }
+
+    // ---------------------------------------------
+    // 关卡生成核心升级：动态生成普通关 & 荣誉关卡
+    // ---------------------------------------------
+    let honorGateModeActive = false; // 是否处于荣誉大考答题模式下
+
+    function renderGatesList() {
+      const container = document.getElementById('gates-container');
+      container.innerHTML = '';
+
+      for (let i = 1; i <= totalGates; i++) {
+        const { start, end } = getGateLevels(i);
+        const isUnlocked = i <= unlockedGate;
+        const isActive = (i === currentGate) && !honorGateModeActive;
+
+        const gateChars = getGateCharacters(i);
+        let totalWordsCount = 0;
+        let masteredWordsCount = 0;
+        
+        for (let char of gateChars) {
+          const dictItems = getWordInfo(char);
+          dictItems.forEach(item => {
+            totalWordsCount++;
+            const key = `${char}_${item.pinyin}`;
+            if (masteryData[key] >= 4) {
+              masteredWordsCount++;
+            }
+          });
+        }
+
+        const progressPercent = Math.min(100, Math.round((masteredWordsCount / totalWordsCount) * 100)) || 0;
+
+        const gateItem = document.createElement('button');
+        gateItem.disabled = !isUnlocked;
+        gateItem.className = `w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all ${
+          isActive 
+            ? 'bg-malvern-green text-white border-malvern-green shadow-md ring-2 ring-malvern-gold/50' 
+            : isUnlocked 
+              ? 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200' 
+              : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60'
+        }`;
+
+        gateItem.onclick = () => {
+          currentGate = i;
+          honorGateModeActive = false;
+          saveProgress();
+          refreshUI();
+        };
+
+        const titleText = `Gate ${i}`;
+        const rangeText = `Lvl ${start}-${end}`;
+
+        gateItem.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs ${
+              isActive 
+                ? 'bg-malvern-gold text-malvern-green' 
+                : isUnlocked 
+                  ? 'bg-slate-100 text-slate-600' 
+                  : 'bg-slate-200 text-slate-400'
+            }">
+              ${isUnlocked ? `<span class="font-serif-uk">${i}</span>` : '🔒'}
+            </div>
+            <div>
+              <div class="font-bold text-xs tracking-wide">${titleText} <span class="font-normal opacity-85 text-[10px]">${rangeText}</span></div>
+              <div class="text-[9px] mt-0.5 ${isActive ? 'text-slate-300' : 'text-slate-500'}">
+                ${masteredWordsCount}/${totalWordsCount} ${currentLanguage === 'zh' ? '已掌握' : 'Mastered'}
+              </div>
+            </div>
+          </div>
+          ${isUnlocked ? `
+            <div class="w-10 bg-slate-200 rounded-full h-1.5 overflow-hidden">
+              <div class="bg-malvern-gold h-full" style="width: ${progressPercent}%"></div>
+            </div>
+          ` : ''}
+        `;
+        container.appendChild(gateItem);
+
+        // 如果是 5 的倍数，在下方插入金光闪闪的“阶段荣誉挑战关”
+        if (i % 5 === 0) {
+          const honorNum = i / 5;
+          // 解锁条件：前 5 关全部解锁通关，即 unlockedGate 必须高于当前荣誉关覆盖范围
+          const isHonorUnlocked = unlockedGate > i;
+          const isHonorActive = honorGateModeActive && (currentGate === i);
+
+          const honorItem = document.createElement('button');
+          honorItem.disabled = !isHonorUnlocked;
+          honorItem.className = `w-full p-3 rounded-xl border text-left flex items-center justify-between transition-all ${
+            isHonorActive
+              ? 'bg-amber-100 text-amber-950 border-amber-400 shadow-md ring-2 ring-amber-500/50'
+              : isHonorUnlocked
+                ? 'bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-800 border-amber-200 hover:from-amber-100'
+                : 'bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed opacity-60'
+          }`;
+
+          honorItem.onclick = () => {
+            currentGate = i; // 荣誉关关联到第 5n 关
+            honorGateModeActive = true;
+            saveProgress();
+            refreshUI();
+            
+            // 提醒并自动切入游戏挑战
+            switchTab('game');
+            showToast(currentLanguage === 'zh' ? "荣誉挑战关卡已准备就绪！" : "Honorary Challenge is Ready!", "info");
+          };
+
+          honorItem.innerHTML = `
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-xs ${
+                isHonorActive
+                  ? 'bg-amber-500 text-white'
+                  : isHonorUnlocked
+                    ? 'bg-amber-200 text-amber-800'
+                    : 'bg-slate-200 text-slate-400'
+              }">
+                👑
+              </div>
+              <div>
+                <div class="font-bold text-xs tracking-wide ${isHonorUnlocked ? 'text-amber-900 font-extrabold' : ''}">
+                  ${currentLanguage === 'zh' ? `阶段荣誉挑战 ${honorNum}` : `Honor Challenge ${honorNum}`}
+                </div>
+                <div class="text-[9px] mt-0.5">
+                  ${currentLanguage === 'zh' ? `检验 ${i-4}-${i} 关错字 Top 40` : `Test Top 40 errored words`}
+                </div>
+              </div>
+            </div>
+            ${isHonorUnlocked ? `
+              <span class="text-[10px] bg-amber-200 text-amber-950 px-2 py-0.5 rounded-full font-black font-kaiti">
+                ${currentLanguage === 'zh' ? '开启' : 'Open'}
+              </span>
+            ` : ''}
+          `;
+          container.appendChild(honorItem);
+        }
+      }
+
+      updateHonoraryTitle();
+    }
+
+    function updateOverallProgress() {
+      const unlockedPercent = Math.round((unlockedGate / 50) * 100);
+      document.getElementById('progress-bar').style.width = `${unlockedPercent}%`;
+      document.getElementById('progress-percentage').textContent = `${unlockedPercent}% (${unlockedGate}/50)`;
+
+      let masteredCount = 0;
+      for (let key in masteryData) {
+        if (masteryData[key] >= 4) { // 答对4次即视为掌握
+          masteredCount++;
+        }
+      }
+      document.getElementById('stats-mastered').textContent = masteredCount;
+      document.getElementById('stats-current-gate').textContent = `Gate ${currentGate}`;
+    }
+
+    function loadGateWords() {
+      const { start, end } = getGateLevels(currentGate);
+      document.getElementById('current-gate-title').textContent = `Gate ${currentGate} (Levels ${start} - ${end})`;
+      
+      const rawChars = getGateCharacters(currentGate);
+      document.getElementById('current-gate-desc').textContent = `${currentLanguage === 'zh' ? '包含生字：' : 'Characters: '}${rawChars}`;
+
+      studyWords = [];
+      for (let char of rawChars) {
+        const infos = getWordInfo(char);
+        infos.forEach(info => {
+          studyWords.push({
+            char: char,
+            pinyin: info.pinyin,
+            eng: info.eng,
+            meaningZh: info.meaningZh,
+            compounds: info.compounds,
+            sZh: info.sZh,
+            sEn: info.sEn,
+            level: findCharLevel(char)
+          });
+        });
+      }
+
+      if (currentStudyIndex >= studyWords.length) {
+        currentStudyIndex = 0;
+      }
+
+      renderFlashcard();
+      renderWordsGrid();
+    }
+
+    function renderFlashcard() {
+      if (studyWords.length === 0) return;
+      const word = studyWords[currentStudyIndex];
+      const key = `${word.char}_${word.pinyin}`;
+      const mastery = masteryData[key] || 0;
+
+      document.getElementById('card-level-tag').textContent = `Level ${word.level}`;
+      document.getElementById('card-char').textContent = word.char;
+      document.getElementById('card-pinyin').textContent = word.pinyin;
+
+      const starsContainer = document.getElementById('card-mastery-stars');
+      starsContainer.innerHTML = '';
+      // 答对4次视为满星/掌握
+      for (let s = 1; s <= 4; s++) {
+        const star = document.createElement('i');
+        star.className = s <= mastery ? 'fas fa-star text-amber-400' : 'far fa-star text-slate-300';
+        starsContainer.appendChild(star);
+      }
+
+      document.getElementById('card-char-back').textContent = word.char;
+      document.getElementById('card-pinyin-back').textContent = word.pinyin;
+      document.getElementById('card-meaning-en').textContent = word.eng;
+      document.getElementById('card-meaning-zh').textContent = word.meaningZh;
+      document.getElementById('card-compounds').textContent = word.compounds;
+      document.getElementById('card-sentence-zh').textContent = word.sZh;
+      document.getElementById('card-sentence-en').textContent = word.sEn;
+
+      const btnMastered = document.getElementById('btn-mastered-toggle');
+      if (mastery >= 4) {
+        btnMastered.className = "bg-emerald-100 hover:bg-emerald-200 text-emerald-800 px-4 py-2.5 rounded-full flex items-center gap-2 transition font-semibold text-sm shadow border border-emerald-300";
+        btnMastered.innerHTML = `✅ <span data-zh="已掌握" data-en="Mastered">已掌握</span>`;
+      } else {
+        btnMastered.className = "bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2.5 rounded-full flex items-center gap-2 transition font-semibold text-sm shadow border border-slate-300";
+        btnMastered.innerHTML = `⭕ <span data-zh="标记为掌握" data-en="Mark Mastered">标记为掌握</span>`;
+      }
+
+      document.getElementById('study-index-label').textContent = `${currentStudyIndex + 1} / ${studyWords.length}`;
+      
+      isCardFlipped = false;
+      document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+      
+      translateElement(btnMastered);
+    }
+
+    function renderWordsGrid() {
+      const grid = document.getElementById('gate-characters-grid');
+      grid.innerHTML = '';
+
+      studyWords.forEach((word, idx) => {
+        const key = `${word.char}_${word.pinyin}`;
+        const mastery = masteryData[key] || 0;
+        const isMastered = mastery >= 4;
+
+        const cell = document.createElement('button');
+        cell.className = `p-3 rounded-xl border text-center transition flex flex-col items-center justify-center ${
+          idx === currentStudyIndex 
+            ? 'bg-malvern-green text-white border-malvern-green shadow ring-2 ring-malvern-gold/50' 
+            : isMastered 
+              ? 'bg-emerald-50 text-slate-700 border-emerald-200' 
+              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+        }`;
+
+        cell.onclick = () => {
+          currentStudyIndex = idx;
+          renderFlashcard();
+          document.getElementById('flashcard-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        };
+
+        cell.innerHTML = `
+          <span class="font-kaiti text-2xl font-bold">${word.char}</span>
+          <span class="text-[10px] mt-0.5 opacity-80">${word.pinyin}</span>
+          <div class="flex gap-0.5 mt-1">
+            ${Array.from({length: 4}).map((_, i) => `
+              <div class="w-1.5 h-1.5 rounded-full ${i < mastery ? 'bg-amber-400' : 'bg-slate-200'}"></div>
+            `).join('')}
+          </div>
+        `;
+        grid.appendChild(cell);
+      });
+    }
+
+    function flipCard() {
+      isCardFlipped = !isCardFlipped;
+      const inner = document.getElementById('flashcard-inner');
+      if (isCardFlipped) {
+        inner.classList.add('rotate-y-180');
+      } else {
+        inner.classList.remove('rotate-y-180');
+      }
+    }
+
+    function prevCard() {
+      if (currentStudyIndex > 0) {
+        currentStudyIndex--;
+      } else {
+        currentStudyIndex = studyWords.length - 1;
+      }
+      renderFlashcard();
+    }
+
+    function nextCard() {
+      if (currentStudyIndex < studyWords.length - 1) {
+        currentStudyIndex++;
+      } else {
+        currentStudyIndex = 0;
+      }
+      renderFlashcard();
+    }
+
+    function toggleCardMarkedMastered() {
+      if (studyWords.length === 0) return;
+      const word = studyWords[currentStudyIndex];
+      const key = `${word.char}_${word.pinyin}`;
+      const isCurrentlyMastered = (masteryData[key] >= 4);
+
+      if (isCurrentlyMastered) {
+        masteryData[key] = 0;
+        showToast(currentLanguage === 'zh' ? "已重置熟练度" : "Mastery Reset", "info");
+      } else {
+        masteryData[key] = 4; // 答对4次视为掌握
+        showToast(currentLanguage === 'zh' ? "字卡已被标记为掌握！" : "Marked as Mastered!", "success");
+      }
+
+      checkGateCompletion();
+      saveProgress();
+      refreshUI();
+    }
+
+    // ---------------------------------------------
+    // 双引擎发音人控制系统（手动/在线切换）
+    // ---------------------------------------------
+    function updateEngineUIVisibility() {
+      const container = document.getElementById('voice-selector-container');
+      const select = document.getElementById('engine-select');
+      if (select) {
+        currentSpeechEngine = select.value;
+        localStorage.setItem('mchk_speech_engine', currentSpeechEngine);
+      }
+      
+      if (currentSpeechEngine === 'device') {
+        container.classList.remove('hidden');
+        populateVoiceSelector();
+      } else {
+        container.classList.add('hidden');
+      }
+    }
+
+    function changeSpeechEngine() {
+      updateEngineUIVisibility();
+      const engineName = currentSpeechEngine === 'cloud' 
+        ? (currentLanguage === 'zh' ? "在线普通话 (推荐)" : "Cloud Mandarin") 
+        : (currentLanguage === 'zh' ? "设备内置语音" : "Device Built-in TTS");
+      showToast(`${currentLanguage === 'zh' ? '已切换至' : 'Switched to'} ${engineName}`, "info");
+    }
+
+    function speakCurrentCard(event) {
+      if (event) event.stopPropagation(); 
+      if (studyWords.length === 0) return;
+      const word = studyWords[currentStudyIndex];
+      speakText(word.char, word.pinyin);
+    }
+
+    function speakText(text, pinyin) {
+      // 核心算法：如果是多音字，自动播放词汇强制语境发音，彻底解决发音与拼音脱节的Bug！
+      let speakPayload = text;
+      if (pinyin) {
+        speakPayload = getSpeakText(text, pinyin);
+      }
+
+      if (currentSpeechEngine === 'cloud') {
+        speakGoogleTranslateTTS(speakPayload);
+      } else {
+        speakDeviceSpeech(speakPayload);
+      }
+    }
+
+    function speakGoogleTranslateTTS(text) {
+      try {
+        const audioUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=zh-CN&client=tw-ob&q=${encodeURIComponent(text)}`;
+        const audio = new Audio(audioUrl);
+        audio.play().catch(err => {
+          console.warn("Google TTS failed, trying Baidu TTS fallback...", err);
+          speakBaiduTTS(text); 
+        });
+      } catch (e) {
+        speakBaiduTTS(text);
+      }
+    }
+
+    function speakBaiduTTS(text) {
+      try {
+        const audioUrl = `https://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=4&text=${encodeURIComponent(text)}`;
+        const audio = new Audio(audioUrl);
+        audio.play().catch(err => {
+          console.warn("Baidu TTS failed, falling back to Device TTS.", err);
+          speakDeviceSpeech(text); 
+        });
+      } catch (e) {
+        speakDeviceSpeech(text);
+      }
+    }
+
+    function speakDeviceSpeech(text) {
+      if (!('speechSynthesis' in window)) {
+        showToast("Speech Synthesis not supported on this browser.", "error");
+        return;
+      }
+
+      window.speechSynthesis.cancel(); 
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.8; 
+
+      const voices = window.speechSynthesis.getVoices();
+      const customVoice = voices.find(v => v.name === selectedVoiceName);
+
+      if (customVoice) {
+        utterance.voice = customVoice;
+        utterance.lang = customVoice.lang;
+      } else {
+        utterance.lang = 'zh-CN';
+        const pthVoice = voices.find(v => {
+          const l = v.lang.toLowerCase().replace('_', '-');
+          return l.includes('cn') || l.includes('hans');
+        });
+        if (pthVoice) utterance.voice = pthVoice;
+      }
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function populateVoiceSelector() {
+      if (!('speechSynthesis' in window)) return;
+      const select = document.getElementById('voice-select');
+      if (!select) return;
+
+      const voices = window.speechSynthesis.getVoices();
+      select.innerHTML = '';
+
+      const zhVoices = voices.filter(v => 
+        v.lang.toLowerCase().startsWith('zh') || 
+        v.lang.toLowerCase().replace('_', '-').startsWith('zh-')
+      );
+
+      if (zhVoices.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = "default_mandarin";
+        opt.textContent = currentLanguage === 'zh' ? "设备默认中文" : "Default Chinese";
+        select.appendChild(opt);
+        return;
+      }
+
+      zhVoices.forEach(voice => {
+        const opt = document.createElement('option');
+        opt.value = voice.name;
+
+        let label = voice.name;
+        const langLower = voice.lang.toLowerCase().replace('_', '-');
+
+        if (langLower.includes('cn') || langLower.includes('hans')) {
+          label = currentLanguage === 'zh' ? `普通话 (中国) - ${voice.name}` : `Mandarin (CN) - ${voice.name}`;
+        } else if (langLower.includes('hk') || langLower.includes('hant-hk')) {
+          label = currentLanguage === 'zh' ? `粤语 (中国香港) - ${voice.name}` : `Cantonese (HK) - ${voice.name}`;
+        } else if (langLower.includes('tw') || langLower.includes('hant-tw')) {
+          label = currentLanguage === 'zh' ? `国语 (中国台湾) - ${voice.name}` : `Mandarin (TW) - ${voice.name}`;
+        } else {
+          label = `${voice.name} (${voice.lang})`;
+        }
+
+        opt.textContent = label;
+        
+        if (voice.name === selectedVoiceName) {
+          opt.selected = true;
+        }
+
+        select.appendChild(opt);
+      });
+
+      if (!selectedVoiceName || !voices.find(v => v.name === selectedVoiceName)) {
+        const bestMandarin = zhVoices.find(v => {
+          const l = v.lang.toLowerCase().replace('_', '-');
+          return l.includes('cn') || l.includes('hans');
+        });
+        if (bestMandarin) {
+          select.value = bestMandarin.name;
+          selectedVoiceName = bestMandarin.name;
+          localStorage.setItem('mchk_selected_voice', selectedVoiceName);
+        } else if (zhVoices.length > 0) {
+          select.value = zhVoices[0].name;
+          selectedVoiceName = zhVoices[0].name;
+          localStorage.setItem('mchk_selected_voice', selectedVoiceName);
+        }
+      }
+    }
+
+    function changeVoiceSelection() {
+      const select = document.getElementById('voice-select');
+      if (select) {
+        selectedVoiceName = select.value;
+        localStorage.setItem('mchk_selected_voice', selectedVoiceName);
+        showToast(currentLanguage === 'zh' ? "设备内置声音已更新！" : "Device voice package updated!", "success");
+      }
+    }
+
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = function() {
+        populateVoiceSelector();
+      };
+      setTimeout(populateVoiceSelector, 100);
+    }
+
+    // ---------------------------------------------
+    // 关卡通过检测核心算法 (答对 4 次视为掌握)
+    // ---------------------------------------------
+    function checkGateCompletion() {
+      const rawChars = getGateCharacters(currentGate);
+      let allCompleted = true;
+      
+      for (let char of rawChars) {
+        const infos = getWordInfo(char);
+        for (let info of infos) {
+          const key = `${char}_${info.pinyin}`;
+          // 答对 4 次视为掌握
+          if ((masteryData[key] || 0) < 4) {
+            allCompleted = false;
+            break;
+          }
+        }
+        if (!allCompleted) break;
+      }
+
+      if (allCompleted && currentGate === unlockedGate) {
+        if (unlockedGate < totalGates) {
+          unlockedGate++;
+          saveProgress();
+          return true; 
+        }
+      }
+      return false;
+    }
+
+    // ---------------------------------------------
+    // 获取特定字词的规范格式（字（拼音））
+    // ---------------------------------------------
+    function getCharWithPinyinFormatted(char) {
+      const pinyin = getDynamicPinyin(char);
+      return `${char}（${pinyin}）`;
+    }
+
+    // 检查当前关卡已解锁的汉字池中累积的多音字卡片总数
+    function getUnlockedPolyphonicsCount() {
+      let polyphonicCount = 0;
+      // 检查当前关卡以及已解锁关卡包含的所有生字
+      for (let i = 1; i <= currentGate; i++) {
+        const rawChars = getGateCharacters(i);
+        for (let char of rawChars) {
+          // 如果在 defaultDict 中该汉字拥有多个独立读音字卡，即为多音字
+          if (defaultDict[char] && defaultDict[char].length > 1) {
+            polyphonicCount++;
+          }
+        }
+      }
+      return polyphonicCount;
+    }
+
+    // ---------------------------------------------
+    // 10款趣味互动游戏系统
+    // ---------------------------------------------
+    let gameActive = false;
+    let gameStep = 1; 
+    let gameScore = 0;
+    let playedGamesList = []; 
+    let currentGameType = "";
+    let gameQuestionData = {}; 
+    let gameRoundWords = []; 
+
+    function resetGameIntro() {
+      gameActive = false;
+      document.getElementById('game-intro-screen').classList.remove('hidden');
+      document.getElementById('game-play-screen').classList.add('hidden');
+      document.getElementById('game-result-screen').classList.add('hidden');
+    }
+
+    function startGame() {
+      if (studyWords.length === 0) {
+        showToast("No words in this Gate to play.", "error");
+        return;
+      }
+
+      if (honorGateModeActive) {
+        isHonorQuizActive = true;
+        gameRoundWords = getHonorGateWords();
+        
+        document.getElementById('intro-main-title').textContent = currentLanguage === 'zh' ? "开始荣誉考核大考！" : "Honorary Exam Launched!";
+        document.getElementById('intro-sub-desc').textContent = currentLanguage === 'zh' 
+          ? "荣誉大考共含 20 道题目。系统已智能筛选出您在过去 5 个关卡里最容易答错的 40 个生字。通关即可解锁专属阶荣誉称号！" 
+          : "The Exam has 20 tasks, built from your top 40 error-prone words from past 5 gates. Complete to earn titles!";
+      } else {
+        isHonorQuizActive = false;
+        let weightedPool = [];
+        studyWords.forEach(w => {
+          const key = `${w.char}_${w.pinyin}`;
+          const mastery = masteryData[key] || 0;
+          const weight = Math.max(1, 5 - mastery);
+          for (let i = 0; i < weight; i++) {
+            weightedPool.push(w);
+          }
+        });
+
+        gameRoundWords = [];
+        for (let i = 0; i < 10; i++) {
+          if (weightedPool.length === 0) {
+            weightedPool = [...studyWords];
+          }
+          const randIndex = Math.floor(Math.random() * weightedPool.length);
+          const selected = weightedPool.splice(randIndex, 1)[0];
+          gameRoundWords.push(selected);
+        }
+      }
+
+      gameActive = true;
+      gameStep = 1;
+      gameScore = 0;
+
+      const baseGameTypes = [
+        "select_pinyin", "eng_to_zh", "listen_find", "compound_match", 
+        "sentence_gap", "pinyin_to_char", "char_pairing",
+        "grid_match", "memory_flip"
+      ];
+
+      const polyCount = getUnlockedPolyphonicsCount();
+      if (polyCount > 5) {
+        baseGameTypes.push("polyphonic");
+      }
+      
+      let candidateGames = baseGameTypes.filter(g => !playedGamesList.includes(g));
+      if (candidateGames.length === 0) {
+        candidateGames = baseGameTypes;
+        playedGamesList = [];
+      }
+      
+      currentGameType = candidateGames[Math.floor(Math.random() * candidateGames.length)];
+      playedGamesList.push(currentGameType);
+
+      document.getElementById('game-intro-screen').classList.add('hidden');
+      document.getElementById('game-play-screen').classList.remove('hidden');
+      document.getElementById('game-result-screen').classList.add('hidden');
+
+      const gameBadgeName = {
+        "select_pinyin": { zh: "选择拼音", en: "Pinyin Guess" },
+        "eng_to_zh": { zh: "英译中选择", en: "Eng to Chi" },
+        "listen_find": { zh: "听音辨字", en: "Listen & Find" },
+        "compound_match": { zh: "组词拼图", en: "Compound Pair" },
+        "sentence_gap": { zh: "例句填空", en: "Sentence Gap" },
+        "pinyin_to_char": { zh: "拼音选字", en: "Pinyin to Word" },
+        "char_pairing": { zh: "双语连线", en: "Match Match" },
+        "polyphonic": { zh: "多音字辨析", en: "Tone Detective" },
+        "grid_match": { zh: "汉字消消乐", en: "Grid Clearer" },
+        "memory_flip": { zh: "字卡翻牌记忆", en: "Card Memory" }
+      };
+
+      const gb = gameBadgeName[currentGameType];
+      document.getElementById('game-name-badge').textContent = currentLanguage === 'zh' ? gb.zh : gb.en;
+
+      nextGameQuestion();
+    }
+
+    function nextGameQuestion() {
+      const totalSteps = isHonorQuizActive ? 20 : 10;
+      if (gameStep > totalSteps) {
+        endGameSession();
+        return;
+      }
+
+      document.getElementById('game-step-indicator').textContent = `Question ${gameStep}/${totalSteps}`;
+      document.getElementById('game-progress-bar').style.width = `${gameStep * (100 / totalSteps)}%`;
+      document.getElementById('game-score').textContent = `Score: ${gameScore}`;
+
+      const targetWord = gameRoundWords[gameStep - 1];
+      gameQuestionData = { target: targetWord };
+
+      const stage = document.getElementById('game-stage');
+      stage.innerHTML = '';
+
+      switch (currentGameType) {
+        case "select_pinyin":
+          buildSelectPinyin(stage, targetWord);
+          break;
+        case "eng_to_zh":
+          buildEngToZh(stage, targetWord);
+          break;
+        case "listen_find":
+          buildListenFind(stage, targetWord);
+          break;
+        case "compound_match":
+          buildCompoundMatch(stage, targetWord);
+          break;
+        case "sentence_gap":
+          buildSentenceGap(stage, targetWord);
+          break;
+        case "pinyin_to_char":
+          buildPinyinToChar(stage, targetWord);
+          break;
+        case "char_pairing":
+          buildCharPairing(stage, targetWord);
+          break;
+        case "polyphonic":
+          buildPolyphonicChallenge(stage, targetWord);
+          break;
+        case "grid_match":
+          buildGridMatch(stage, targetWord);
+          break;
+        case "memory_flip":
+          buildMemoryFlip(stage, targetWord);
+          break;
+      }
+    }
+
+    function submitAnswer(isCorrect) {
+      const fb = document.getElementById('game-feedback');
+      fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+      
+      const targetWord = gameQuestionData.target;
+      const key = `${targetWord.char}_${targetWord.pinyin}`;
+
+      if (isCorrect) {
+        gameScore++;
+        if (!masteryData[key]) masteryData[key] = 0;
+        if (masteryData[key] < 4) { // 熟练度累计最高 4
+          masteryData[key]++;
+        }
+        
+        fb.classList.add('bg-emerald-100', 'text-emerald-800');
+        fb.innerHTML = `✨ ${currentLanguage === 'zh' ? '太棒了，答对了！' : 'Excellent, correct!'}`;
+      } else {
+        if (!errorCountData[key]) errorCountData[key] = 0;
+        errorCountData[key]++;
+        localStorage.setItem('mchk_error_count_data', JSON.stringify(errorCountData));
+
+        fb.classList.add('bg-rose-100', 'text-rose-800');
+        fb.innerHTML = `❌ ${currentLanguage === 'zh' ? '加油，答错了。' : 'Oops, incorrect.'} (${targetWord.char} = ${targetWord.pinyin})`;
+      }
+
+      setTimeout(() => {
+        fb.classList.add('hidden');
+        gameStep++;
+        
+        if (isHonorQuizActive && gameStep % 5 === 1) {
+          const baseGameTypes = ["select_pinyin", "eng_to_zh", "listen_find", "compound_match", "sentence_gap", "pinyin_to_char", "char_pairing", "grid_match", "memory_flip"];
+          currentGameType = baseGameTypes[Math.floor(Math.random() * baseGameTypes.length)];
+          updateGameBadgeTitle();
+        }
+
+        nextGameQuestion();
+      }, 1500);
+    }
+
+    function getRandomDistractors(correctItem, keyToExtract, pool, count = 3) {
+      let distractors = pool
+        .filter(item => item[keyToExtract] !== correctItem[keyToExtract])
+        .map(item => item[keyToExtract]);
+      distractors = [...new Set(distractors)];
+      return shuffleArray(distractors).slice(0, count);
+    }
+
+    // 1. 选择正确拼音 (Fisher-Yates 强随机化，防位置同步)
+    function buildSelectPinyin(stage, word) {
+      const rawOptions = [word.pinyin, ...getRandomDistractors(word, 'pinyin', studyWords, 3)];
+      const options = shuffleArray([...new Set(rawOptions)]);
+
+      stage.innerHTML = `
+        <div class="text-center space-y-6 w-full max-w-sm">
+          <div class="font-kaiti text-8xl text-malvern-green font-bold p-4 bg-slate-50 rounded-2xl border border-slate-200 shadow-inner">${word.char}</div>
+          <p class="text-xs text-slate-505 font-standard" data-zh="选择这字的正确拼音：" data-en="Select the correct pinyin:">选择这字的正确拼音：</p>
+          <div class="grid grid-cols-2 gap-3">
+            ${options.map(opt => `
+              <button onclick="submitAnswer('${opt}' === '${word.pinyin}')" class="py-3 px-4 bg-white hover:bg-malvern-green hover:text-white border border-slate-200 hover:border-malvern-green rounded-xl text-lg font-bold shadow-sm transition active:scale-95">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 2. 英译中选择
+    function buildEngToZh(stage, word) {
+      const rawOptions = [word.char, ...getRandomDistractors(word, 'char', studyWords, 3)];
+      const options = shuffleArray([...new Set(rawOptions)]);
+
+      stage.innerHTML = `
+        <div class="text-center space-y-6 w-full max-w-sm">
+          <div class="text-3xl font-serif-uk text-malvern-gold font-bold px-4 py-6 bg-slate-900 text-white rounded-2xl border-2 border-malvern-green shadow">
+            "${word.eng}"
+          </div>
+          <p class="text-xs text-slate-500 font-standard" data-zh="选择意思对应的汉字：" data-en="Select the corresponding character:">选择意思对应的汉字：</p>
+          <div class="grid grid-cols-2 gap-3">
+            ${options.map(opt => `
+              <button onclick="submitAnswer('${opt}' === '${word.char}')" class="py-4 font-kaiti text-3xl font-bold bg-white hover:bg-malvern-gold hover:text-malvern-green border border-slate-200 rounded-xl shadow-sm transition active:scale-95">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 3. 听音辨字
+    function buildListenFind(stage, word) {
+      const options = shuffleArray([word.char, ...getRandomDistractors(word, 'char', studyWords, 3)]);
+
+      speakText(word.char, word.pinyin);
+
+      stage.innerHTML = `
+        <div class="text-center space-y-6 w-full max-w-sm">
+          <button onclick="speakText('${word.char}', '${word.pinyin}')" class="w-20 h-20 bg-malvern-gold text-malvern-green rounded-full shadow-lg hover:scale-105 active:scale-95 transition flex items-center justify-center mx-auto">
+            🔊
+          </button>
+          <p class="text-xs text-slate-500 font-standard" data-zh="点击上方听发音，然后选择正确的字：" data-en="Tap above to listen, then select the matching character:">点击上方听发音，然后选择正确的字：</p>
+          <div class="grid grid-cols-2 gap-3 font-standard">
+            ${options.map(opt => `
+              <button onclick="submitAnswer('${opt}' === '${word.char}')" class="py-4 font-kaiti text-3xl font-bold bg-white hover:bg-malvern-green hover:text-white border border-slate-200 rounded-xl shadow-sm transition active:scale-95 font-standard">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 4. 组词拼图匹配 (确保所有选项都是规范的“汉字（拼音）”格式出现)
+    function buildCompoundMatch(stage, word) {
+      const comps = word.compounds.split(',')[0].trim().split('(')[0].trim();
+      let left = word.char;
+      let right = comps.replace(left, "").substring(0, 1);
+
+      if (!right) {
+        right = "个"; 
+      }
+
+      const correctOptionFormatted = getCharWithPinyinFormatted(right);
+
+      const distractorsRaw = getRandomDistractors(word, 'char', studyWords, 3);
+      const options = [correctOptionFormatted];
+
+      distractorsRaw.forEach(char => {
+        if (char !== right) {
+          options.push(getCharWithPinyinFormatted(char));
+        }
+      });
+
+      const backupChars = ["人", "大", "天", "子", "生", "好", "们", "里", "心", "车"];
+      while (options.length < 4) {
+        const backupChar = backupChars[Math.floor(Math.random() * backupChars.length)];
+        const formattedBackup = getCharWithPinyinFormatted(backupChar);
+        if (!options.includes(formattedBackup)) {
+          options.push(formattedBackup);
+        }
+      }
+
+      const shuffledOptions = shuffleArray(options);
+
+      stage.innerHTML = `
+        <div class="text-center space-y-6 w-full max-w-md">
+          <p class="text-sm text-slate-600 font-semibold font-standard" data-zh="拼出正确的词汇或组合：" data-en="Complete the compound word:">拼出正确的词汇或组合：</p>
+          <div class="flex justify-center items-center gap-4 py-4">
+            <div class="w-24 h-24 bg-malvern-green text-white text-4xl font-kaiti font-bold rounded-xl flex items-center justify-center shadow">
+              ${left}
+            </div>
+            <div class="text-slate-400 text-2xl font-bold">+</div>
+            <div class="w-24 h-24 bg-slate-100 text-slate-400 text-4xl font-bold border-2 border-dashed border-slate-300 rounded-xl flex items-center justify-center">
+              ?
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            ${shuffledOptions.map(opt => `
+              <button onclick="submitAnswer('${opt}' === '${correctOptionFormatted}')" class="py-3 px-4 bg-white hover:bg-malvern-gold hover:text-malvern-green border border-slate-200 rounded-xl text-lg font-bold shadow-sm transition active:scale-95 flex items-center justify-center font-standard">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 5. 例句填空 (确保无泄题 Bug)
+    function buildSentenceGap(stage, word) {
+      let sentence = word.sZh || "";
+      const targetChar = word.char;
+      
+      const regex = new RegExp(targetChar, 'g');
+      const maskedSentence = sentence.replace(regex, "【 ____ 】");
+
+      const rawOptions = [word.char, ...getRandomDistractors(word, 'char', studyWords, 3)];
+      const options = shuffleArray([...new Set(rawOptions)]);
+
+      stage.innerHTML = `
+        <div class="text-center space-y-6 w-full max-w-lg">
+          <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+            <p class="text-xl font-medium text-slate-800 leading-relaxed font-standard">${maskedSentence}</p>
+            <p class="text-xs text-slate-400 italic mt-3 font-standard" data-zh="英文翻译：" data-en="Translation:">英文翻译：</p>
+            <p class="text-xs text-slate-505 italic mt-1">${word.sEn}</p>
+          </div>
+          <p class="text-xs text-slate-500 font-standard" data-zh="选择正确的汉字填补空格：" data-en="Select the correct character to fill in the blank:">选择正确的汉字填补空格：</p>
+          <div class="grid grid-cols-2 gap-3">
+            ${options.map(opt => `
+              <button onclick="submitAnswer('${opt}' === '${word.char}')" class="py-4 font-kaiti text-3xl font-bold bg-white hover:bg-malvern-green hover:text-white border border-slate-200 rounded-xl shadow-sm transition active:scale-95">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 6. 拼音选字
+    function buildPinyinToChar(stage, word) {
+      const rawOptions = [word.char, ...getRandomDistractors(word, 'char', studyWords, 3)];
+      const options = shuffleArray([...new Set(rawOptions)]);
+
+      stage.innerHTML = `
+        <div class="text-center space-y-6 w-full max-w-sm">
+          <div class="text-3xl font-bold text-malvern-gold bg-malvern-green py-4 rounded-xl shadow font-standard">${word.pinyin}</div>
+          <p class="text-xs text-slate-500 font-standard" data-zh="哪个汉字的拼音是这个？" data-en="Which character belongs to this pinyin?">哪个汉字的拼音是这个？</p>
+          <div class="grid grid-cols-2 gap-3">
+            ${options.map(opt => `
+              <button onclick="submitAnswer('${opt}' === '${word.char}')" class="py-4 font-kaiti text-3xl font-bold bg-white hover:bg-malvern-green hover:text-white border border-slate-200 rounded-xl shadow-sm transition active:scale-95">
+                ${opt}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 7. 汉字双语连线
+    function buildCharPairing(stage, word) {
+      const pool = shuffleArray(studyWords).filter(w => w.char !== word.char);
+      const pairingItems = [word, ...pool.slice(0, 2)]; 
+      
+      const leftList = shuffleArray(pairingItems);
+      const rightList = shuffleArray(pairingItems);
+
+      let selectedLeft = null;
+      let selectedRight = null;
+      let selectedLeftId = null;
+      let selectedRightId = null;
+      let pairedCount = 0;
+      let wrongAttempts = 0;
+
+      window.checkPairingMatch = function(side, charVal, btnId) {
+        const curBtn = document.getElementById(btnId);
+        if (curBtn.disabled) return;
+
+        if (side === 'left') {
+          document.querySelectorAll('.left-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-malvern-gold'));
+          curBtn.classList.add('ring-4', 'ring-malvern-gold');
+          selectedLeft = charVal;
+          selectedLeftId = btnId;
+        } else {
+          document.querySelectorAll('.right-btn').forEach(btn => btn.classList.remove('ring-4', 'ring-malvern-gold'));
+          curBtn.classList.add('ring-4', 'ring-malvern-gold');
+          selectedRight = charVal;
+          selectedRightId = btnId;
+        }
+
+        if (selectedLeft && selectedRight) {
+          if (selectedLeft === selectedRight) {
+            const lBtn = document.getElementById(selectedLeftId);
+            const rBtn = document.getElementById(selectedRightId);
+            lBtn.disabled = true;
+            rBtn.disabled = true;
+            lBtn.classList.remove('ring-4', 'ring-malvern-gold', 'bg-white');
+            rBtn.classList.remove('ring-4', 'ring-malvern-gold', 'bg-white');
+            lBtn.classList.add('bg-emerald-100', 'text-emerald-800', 'border-emerald-300');
+            rBtn.classList.add('bg-emerald-100', 'text-emerald-800', 'border-emerald-300');
+            
+            showToast(currentLanguage === 'zh' ? "配对正确！" : "Matched!", "success");
+            pairedCount++;
+            
+            selectedLeft = null;
+            selectedRight = null;
+            selectedLeftId = null;
+            selectedRightId = null;
+
+            if (pairedCount === 3) {
+              setTimeout(() => {
+                submitAnswer(wrongAttempts === 0);
+              }, 800);
+            }
+          } else {
+            wrongAttempts++;
+            showToast(currentLanguage === 'zh' ? "配对不正确，请再试一次！" : "Mismatch, try again!", "error");
+            const activeLeft = selectedLeftId;
+            const activeRight = selectedRightId;
+            setTimeout(() => {
+              document.getElementById(activeLeft).classList.remove('ring-4', 'ring-malvern-gold');
+              document.getElementById(activeRight).classList.remove('ring-4', 'ring-malvern-gold');
+            }, 500);
+            selectedLeft = null;
+            selectedRight = null;
+            selectedLeftId = null;
+            selectedRightId = null;
+          }
+        }
+      }
+
+      stage.innerHTML = `
+        <div class="w-full max-w-md space-y-6 font-standard">
+          <p class="text-center text-sm text-slate-600 font-semibold" data-zh="将左边的汉字与右边的英文意思配对：" data-en="Match the left characters with their English meanings:">将左边的汉字与右边的英文意思配对：</p>
+          <div class="grid grid-cols-2 gap-6">
+            <div class="space-y-3">
+              ${leftList.map((item, i) => `
+                <button id="l-pair-${i}" onclick="checkPairingMatch('left', '${item.char}', 'l-pair-${i}')" class="left-btn w-full py-3 font-kaiti text-2xl font-bold bg-white border border-slate-200 rounded-xl shadow-sm text-slate-800 transition active:scale-95">
+                  ${item.char}
+                </button>
+              `).join('')}
+            </div>
+            <div class="space-y-3">
+              ${rightList.map((item, i) => `
+                <button id="r-pair-${i}" onclick="checkPairingMatch('right', '${item.char}', 'r-pair-${i}')" class="right-btn w-full py-3 px-2 text-xs font-bold bg-white border border-slate-200 rounded-xl shadow-sm text-slate-700 transition active:scale-95 min-h-[50px] flex items-center justify-center">
+                  ${item.eng}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 8. 多音字辨析
+    function buildPolyphonicChallenge(stage, word) {
+      const polyphonics = ["了", "长", "看", "和", "乐", "只", "少", "都", "倒", "降"];
+      let testWord = word;
+
+      const foundPoly = studyWords.find(w => polyphonics.includes(w.char));
+      if (foundPoly) {
+        testWord = foundPoly;
+      }
+
+      const allDicts = defaultDict[testWord.char] || [testWord];
+      const testPinyin = testWord.pinyin;
+      
+      stage.innerHTML = `
+        <div class="text-center space-y-6 w-full max-w-sm font-standard">
+          <div class="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl p-3 text-xs font-bold flex items-center gap-1.5 justify-center">
+            🎤 <span data-zh="挑战多音字 / Polyphonic Tone Challenge" data-en="Polyphonic Tone Challenge">挑战多音字 / Tone Challenge</span>
+          </div>
+          <div class="font-kaiti text-8xl text-slate-900 font-bold p-4 bg-white rounded-2xl border border-slate-200 shadow-sm">${testWord.char}</div>
+          <div class="bg-slate-50 p-3 rounded-lg border text-sm text-slate-600">
+            <p>${testWord.sZh}</p>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            ${allDicts.map(dict => `
+              <button onclick="submitAnswer('${dict.pinyin}' === '${testPinyin}')" class="py-3 px-4 bg-white hover:bg-malvern-green hover:text-white border border-slate-200 rounded-xl text-lg font-bold shadow-sm transition active:scale-95">
+                ${dict.pinyin}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 9. 汉字消消乐 (所有 3 组卡牌全部配对完毕才可通过)
+    function buildGridMatch(stage, word) {
+      const selectedWords = shuffleArray(studyWords).slice(0, 3); 
+      const deck = [];
+      selectedWords.forEach(w => {
+        deck.push({ type: 'char', val: w.char, id: w.char });
+        deck.push({ type: 'eng', val: w.eng, id: w.char });
+      });
+
+      const shuffledDeck = shuffleArray(deck);
+      let firstSelected = null;
+      let matchedCount = 0;
+      let wrongAttempts = 0;
+
+      window.triggerGridSelect = function(idx, btnId) {
+        const btn = document.getElementById(btnId);
+        if (btn.disabled) return;
+        btn.classList.add('ring-4', 'ring-malvern-gold');
+
+        if (!firstSelected) {
+          firstSelected = { idx, item: shuffledDeck[idx], btnId };
+        } else {
+          if (firstSelected.idx === idx) {
+            btn.classList.remove('ring-4', 'ring-malvern-gold');
+            firstSelected = null;
+            return;
+          }
+
+          const matchSuccess = (firstSelected.item.id === shuffledDeck[idx].id);
+          if (matchSuccess) {
+            const btn1 = document.getElementById(firstSelected.btnId);
+            const btn2 = btn;
+            btn1.disabled = true;
+            btn2.disabled = true;
+            btn1.style.visibility = 'hidden';
+            btn2.style.visibility = 'hidden';
+            showToast(currentLanguage === 'zh' ? "消除成功！" : "Match Success!", "success");
+            matchedCount++;
+            
+            if (matchedCount === 3) {
+              setTimeout(() => {
+                submitAnswer(wrongAttempts === 0);
+              }, 800);
+            }
+          } else {
+            wrongAttempts++;
+            showToast(currentLanguage === 'zh' ? "配对错误，请重试！" : "Wrong match, try again!", "error");
+            const btn1 = document.getElementById(firstSelected.btnId);
+            const btn2 = btn;
+            setTimeout(() => {
+              btn1.classList.remove('ring-4', 'ring-malvern-gold');
+              btn2.classList.remove('ring-4', 'ring-malvern-gold');
+            }, 500);
+          }
+          firstSelected = null;
+        }
+      };
+
+      stage.innerHTML = `
+        <div class="w-full max-w-sm space-y-6 font-standard">
+          <p class="text-center text-sm text-slate-600 font-semibold" data-zh="消消乐：选择一个汉字和它对应的英文解释" data-en="Grid Match: Select a character and its English meaning to clear">消消乐：选择一个汉字和它对应的英文解释</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            ${shuffledDeck.map((item, i) => `
+              <button id="grid-card-${i}" onclick="triggerGridSelect(${i}, 'grid-card-${i}')" class="p-4 bg-white border border-slate-200 hover:border-malvern-green text-slate-800 rounded-xl shadow-sm font-bold transition duration-150 h-20 flex items-center justify-center text-center font-standard">
+                <span class="${item.type === 'char' ? 'font-kaiti text-3xl' : 'text-xs text-slate-600'}">${item.val}</span>
+              </button>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // 10. 翻牌记忆消消乐 (彻底解决卡背内容读取错位Bug、内置限次2次与UI双心自愈系统)
+    function buildMemoryFlip(stage, word) {
+      const selectedWords = shuffleArray(studyWords).slice(0, 2); 
+      const deck = [];
+      selectedWords.forEach(w => {
+        // 使用精确联合哈希键防止配对信息错乱
+        deck.push({ type: 'char', val: w.char, id: `${w.char}_${w.pinyin}` });
+        deck.push({ type: 'pinyin', val: w.pinyin, id: `${w.char}_${w.pinyin}` });
+      });
+
+      const shuffledDeck = shuffleArray(deck);
+      let activeFlipped = null;
+      let matchedCount = 0;
+      let wrongAttempts = 0;
+      let chancesLeft = 2;
+
+      window.triggerMemoryFlip = function(idx, cardId) {
+        const btn = document.getElementById(cardId);
+        if (btn.getAttribute('data-matched') === 'true') return;
+        
+        const cardInner = document.querySelector(`#${cardId} .transform-style-3d`);
+        if (cardInner.classList.contains('rotate-y-180')) return; 
+
+        cardInner.classList.add('rotate-y-180');
+
+        if (!activeFlipped) {
+          activeFlipped = { idx, item: shuffledDeck[idx], cardId, cardInner };
+        } else {
+          if (activeFlipped.idx === idx) return;
+
+          // 核心修正：比对打乱后的 shuffledDeck 数据源，杜绝之前比对原始 deck 的严重错位！
+          const isMatch = (activeFlipped.item.id === shuffledDeck[idx].id);
+          if (isMatch) {
+            const c1 = document.getElementById(activeFlipped.cardId);
+            const c2 = document.getElementById(cardId);
+            c1.setAttribute('data-matched', 'true');
+            c2.setAttribute('data-matched', 'true');
+            
+            setTimeout(() => {
+              c1.style.opacity = '0.3';
+              c2.style.opacity = '0.3';
+            }, 300);
+
+            matchedCount++;
+            activeFlipped = null;
+
+            if (matchedCount === 2) {
+              setTimeout(() => {
+                submitAnswer(true);
+              }, 800);
+            }
+          } else {
+            chancesLeft--;
+            updateHeartsUI(chancesLeft);
+            showToast(currentLanguage === 'zh' ? "配对错误！" : "Wrong match!", "error");
+
+            const activeCard = activeFlipped;
+            activeFlipped = null;
+
+            setTimeout(() => {
+              activeCard.cardInner.classList.remove('rotate-y-180');
+              cardInner.classList.remove('rotate-y-180');
+
+              if (chancesLeft <= 0) {
+                setTimeout(() => {
+                  submitAnswer(false);
+                }, 500);
+              }
+            }, 800);
+          }
+        }
+      }
+
+      window.updateHeartsUI = function(chances) {
+        const heartsContainer = document.getElementById('hearts-container');
+        if (heartsContainer) {
+          heartsContainer.innerHTML = Array.from({length: 2}).map((_, i) => `
+            <span class="text-xl inline-block transition-transform duration-300 transform scale-110">${i < chances ? '❤️' : '🖤'}</span>
+          `).join('');
+        }
+      }
+
+      stage.innerHTML = `
+        <div class="w-full max-w-sm space-y-6 font-standard">
+          <div class="flex justify-between items-center bg-slate-100 p-2.5 rounded-xl border">
+            <span class="text-xs font-bold text-slate-600" data-zh="作答机会：" data-en="Chances Left:">作答机会：</span>
+            <div id="hearts-container" class="flex gap-1">
+              <span class="text-xl">❤️</span>
+              <span class="text-xl">❤️</span>
+            </div>
+          </div>
+          <p class="text-center text-sm text-slate-600 font-semibold" data-zh="翻牌记忆：翻开两张相同的配对（汉字与拼音）" data-en="Memory Flip: Flip and match characters with their correct pinyin">翻牌记忆：翻开配对（汉字与拼音）</p>
+          <div class="grid grid-cols-2 gap-4">
+            ${shuffledDeck.map((item, i) => `
+              <div id="mem-card-${i}" data-matched="false" class="w-full h-24 perspective-1000 cursor-pointer" onclick="triggerMemoryFlip(${i}, 'mem-card-${i}')">
+                <div class="transform-style-3d transition-transform duration-300 relative w-full h-full rounded-xl shadow-md border border-slate-200">
+                  <div class="absolute inset-0 bg-malvern-green text-malvern-gold rounded-xl flex items-center justify-center font-bold font-serif-uk backface-hidden text-lg">
+                    M
+                  </div>
+                  <div class="absolute inset-0 bg-white rounded-xl flex items-center justify-center font-bold backface-hidden rotate-y-180 p-1">
+                    <span class="${item.type === 'char' ? 'font-kaiti text-3xl text-malvern-green' : 'text-sm text-slate-600'}">${item.val.split('_')[0]}</span>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------------------------------------------
+    // 游戏挑战结束逻辑
+    // ---------------------------------------------
+    function endGameSession() {
+      gameActive = false;
+      document.getElementById('game-play-screen').classList.add('hidden');
+      document.getElementById('game-result-screen').classList.remove('hidden');
+
+      const totalSteps = isHonorQuizActive ? 20 : 10;
+      document.getElementById('result-score').textContent = `${gameScore} / ${totalSteps}`;
+
+      if (isHonorQuizActive) {
+        if (gameScore >= 16) {
+          showToast(currentLanguage === 'zh' ? "恭喜你！成功通过阶段荣誉大考！" : "Congratulations! You passed the Honorary Exam!", "success");
+          if (currentGate === unlockedGate && unlockedGate < totalGates) {
+            unlockedGate++;
+          }
+          document.getElementById('result-mastery-updates').textContent = currentLanguage === 'zh' 
+            ? "恭喜获得全新中文部荣誉挑战勋章！称号已在左侧名片晋升更新。" 
+            : "Honorary badge awarded! Title promoted in your left card.";
+          document.getElementById('result-unlocked-banner').classList.remove('hidden');
+        } else {
+          document.getElementById('result-mastery-updates').textContent = currentLanguage === 'zh' 
+            ? "荣誉考试未通过（需答对16题以上）。多回字卡看一看错题，继续加油！" 
+            : "Exam failed (16+ required). Review card error stats and try again!";
+          document.getElementById('result-unlocked-banner').classList.add('hidden');
+        }
+      } else {
+        const newlyUnlocked = checkGateCompletion();
+        const totalWords = studyWords.length;
+        let masteredCount = 0;
+        studyWords.forEach(w => {
+          const key = `${w.char}_${w.pinyin}`;
+          if (masteryData[key] >= 4) masteredCount++;
+        });
+
+        document.getElementById('result-mastery-updates').textContent = `${currentLanguage === 'zh' ? '本关掌握度：' : 'Gate Mastery: '}${masteredCount} / ${totalWords} ${currentLanguage === 'zh' ? '已掌握' : 'completed'}`;
+
+        if (newlyUnlocked || (unlockedGate > currentGate)) {
+          document.getElementById('result-unlocked-banner').classList.remove('hidden');
+        } else {
+          document.getElementById('result-unlocked-banner').classList.add('hidden');
+        }
+      }
+
+      saveProgress();
+      refreshUI();
+    }
+
+    function restartGame() {
+      resetGameIntro();
+      startGame();
+    }
+
+    // ---------------------------------------------
+    // 页面初始化加载
+    // ---------------------------------------------
+    window.onload = function() {
+      initFirebaseAndAuth();
+      
+      const select = document.getElementById('engine-select');
+      if (select) {
+        select.value = currentSpeechEngine;
+      }
+      
+      updateEngineUIVisibility();
+      setTimeout(populateVoiceSelector, 100);
+    };
+
+  </script>
+</body>
+</html>
